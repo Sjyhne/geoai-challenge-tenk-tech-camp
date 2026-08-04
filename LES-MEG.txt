@@ -1,0 +1,38 @@
+GEOAI CHALLENGE V24 – LINUX WEBGPU TEST
+========================================
+
+WINDOWS
+1. Dobbeltklikk START-GEOAI.bat.
+2. Bruk Edge eller Chrome.
+3. La servervinduet stå åpent. Trykk Ctrl+C i vinduet for å stoppe
+   den lokale serveren når dere er ferdige.
+
+LINUX – VIKTIG
+1. Pakk ut hele ZIP-filen.
+2. Høyreklikk START-GEOAI-LINUX.sh og tillat kjøring som program,
+   eller kjør i terminal:
+
+   chmod +x START-GEOAI-LINUX.sh
+   ./START-GEOAI-LINUX.sh
+
+3. Skriptet starter en lokal webserver og åpner Chrome/Chromium med:
+   - WebGPU aktivert
+   - Vulkan aktivert
+   - GPU-blokkeringslisten overstyrt
+   - egen midlertidig nettleserprofil
+   La terminalen stå åpen. Trykk Ctrl+C i terminalen for å stoppe serveren.
+
+4. Gå til fanen «3. Bruk KI» i GeoAI. Fanen tester WebGPU automatisk og
+   varsler der hvis maskinen ikke kan kjøre modellen. Knappen «Åpne WebSAM
+   2.1 Small» går rett til WebSAM.
+
+HVORFOR DENNE VERSJONEN?
+Feilmeldingen «Failed to get GPU adapter» viser at modellen ble lastet,
+men at WebSAM ikke fant en WebGPU-adapter. V24 retter oppstartsmåten på
+Linux, slik at Chrome/Chromium får nødvendige WebGPU/Vulkan-flagg.
+
+MERK
+- WebSAM og modellfilene ligger fortsatt på den eksterne WebSAM-tjenesten.
+- Denne versjonen er derfor ikke en fullstendig offline-utgave.
+- Hvis WebGPU-testen fortsatt feiler, kontroller grafikkdriver og chrome://gpu.
+- Firefox anbefales ikke for denne testen.
