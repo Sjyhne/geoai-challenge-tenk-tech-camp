@@ -1,7 +1,8 @@
 {
   "name": "GeoAI oppgave Tenk Tech Camp",
-  "build": "2026-08-04-square-work-maps",
+  "build": "2026-08-04-mac-launcher",
   "changes": [
+    "Mac-startskript er lagt til: START-GEOAI-MAC.command starter lokal server og aapner nettleseren",
     "Finn omraade og Bygg kart bruker naa samme kvadratiske kartformat som PNG-bildet til WebSAM",
     "Finn omraade har naa gratis Kartverket-sok etter norske adresser og stedsnavn",
     "Soket bruker Geonorge-adresse og stedsnavn uten API-nokkel og flytter kartet til valgt treff",

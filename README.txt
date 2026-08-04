@@ -12,6 +12,6 @@ Denne pakken inneholder kontrollert:
 - Deltakerne tegner først sitt eget kart og prøver deretter å gjenskape det med WebSAM.
 - Deltakerne kan legge til egne karttyper i tegnefanen og importere WebSAM-masker for dem.
 - Resultatsiden kan filtreres til alle typer eller én klasse om gangen.
-- Startskriptene kjører den lokale serveren i terminalvinduet, slik at Ctrl+C stopper den.
+- Startskript for Windows, Mac og Linux kjører den lokale serveren i terminalvinduet, slik at Ctrl+C stopper den.
 - PDF-utskrift som bruker et skjermbilde av kartet uten zoomknapper.
 - Cache-busting på app.js og styles.css, slik at nettleseren ikke bruker gamle filer.

@@ -7,6 +7,13 @@ WINDOWS
 3. La servervinduet stå åpent. Trykk Ctrl+C i vinduet for å stoppe
    den lokale serveren når dere er ferdige.
 
+MAC
+1. Dobbeltklikk START-GEOAI-MAC.command.
+2. Hvis macOS blokkerer fila første gang: høyreklikk, velg Åpne, og bekreft.
+3. Bruk helst Chrome for WebSAM/WebGPU.
+4. La terminalvinduet stå åpent. Trykk Ctrl+C i vinduet for å stoppe
+   den lokale serveren når dere er ferdige.
+
 LINUX – VIKTIG
 1. Pakk ut hele ZIP-filen.
 2. Høyreklikk START-GEOAI-LINUX.sh og tillat kjøring som program,
