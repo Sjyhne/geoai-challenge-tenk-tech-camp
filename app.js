@@ -174,18 +174,20 @@ document.addEventListener("DOMContentLoaded", () => {
     $$(".tab").forEach(t=>t.classList.toggle("active", t.id===target));
     if(target==="explore") setTimeout(()=>exploreMap.invalidateSize(),80);
     if(target==="digitize"){
-      // Bruk alltid det området deltakeren faktisk valgte i fane 1.
-      // Lagring av visningen hindrer at et skjult Leaflet-kart faller tilbake til startutsnittet.
-      let view=selectedMapView;
-      if(!view){
-        const c=exploreMap.getCenter();
-        view={lat:c.lat,lng:c.lng,zoom:exploreMap.getZoom()};
-      }
-      digitizeMap.setView([view.lat,view.lng],view.zoom,{animate:false});
-      setTimeout(()=>{
-        digitizeMap.invalidateSize(true);
+      // Bruk samme kvadratiske utsnitt som ble sendt til WebSAM. Deltakeren kan
+      // zoome inn for presisjon, men ikke panorere/tegne seg ut av maskens område.
+      if(!applyDigitizeCutoutBounds(true)){
+        let view=selectedMapView;
+        if(!view){
+          const c=exploreMap.getCenter();
+          view={lat:c.lat,lng:c.lng,zoom:exploreMap.getZoom()};
+        }
         digitizeMap.setView([view.lat,view.lng],view.zoom,{animate:false});
-      },100);
+        setTimeout(()=>{
+          digitizeMap.invalidateSize(true);
+          digitizeMap.setView([view.lat,view.lng],view.zoom,{animate:false});
+        },100);
+      }
     }
     if(target==="result"){
       setTimeout(()=>resultMap.invalidateSize(true),100);
@@ -538,6 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nw=exploreMap.containerPointToLatLng([cx0,cy0]);
         const se=exploreMap.containerPointToLatLng([cx0+cs,cy0+cs]);
         localStorage.setItem("geoai-v20-map-bounds",JSON.stringify([[nw.lat,nw.lng],[se.lat,se.lng]]));
+        applyDigitizeCutoutBounds(false);
       }catch(_){}
       syncCapturedCutoutToResult(dataUrl);
       missionState.explore=true;updateOverallProgress();
@@ -591,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }catch(_){}
 
   // Digitizing map
-  const digitizeMap=L.map("digitizeMap",{doubleClickZoom:false}).setView([58.1467,7.9956],17);
+  const digitizeMap=L.map("digitizeMap",{doubleClickZoom:false,maxBoundsViscosity:1}).setView([58.1467,7.9956],17);
   // zoomSnap:0 lar resultatkartet treffe ortofotoets kvadratiske utsnitt
   // helt kant-i-kant, i stedet for å runde av til et helt zoomnivå.
   const resultMap=L.map("resultMap",{zoomControl:true,attributionControl:true,zoomSnap:0}).setView([58.1467,7.9956],16);
@@ -619,6 +622,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const featureGroup=L.featureGroup().addTo(digitizeMap);
   const sketchGroup=L.featureGroup().addTo(digitizeMap);
   const editGroup=L.featureGroup().addTo(digitizeMap);
+
+  function savedCutoutBounds(){
+    try{
+      const data=JSON.parse(localStorage.getItem("geoai-v20-map-bounds")||"null");
+      if(!Array.isArray(data)||data.length!==2)return null;
+      const bounds=L.latLngBounds(data[0],data[1]);
+      return bounds.isValid()?bounds:null;
+    }catch(_){
+      return null;
+    }
+  }
+
+  function applyDigitizeCutoutBounds(fit=false){
+    const bounds=savedCutoutBounds();
+    if(!bounds)return false;
+    digitizeMap.setMaxBounds(bounds);
+    if(fit){
+      digitizeMap.setMinZoom(0);
+      digitizeMap.invalidateSize(true);
+      digitizeMap.fitBounds(bounds,{animate:false,padding:[0,0]});
+      digitizeMap.setMinZoom(digitizeMap.getZoom());
+      setTimeout(()=>{
+        digitizeMap.setMinZoom(0);
+        digitizeMap.invalidateSize(true);
+        digitizeMap.fitBounds(bounds,{animate:false,padding:[0,0]});
+        digitizeMap.setMinZoom(digitizeMap.getZoom());
+      },100);
+    }
+    return true;
+  }
+
+  function isInsideCutout(latlng){
+    const bounds=savedCutoutBounds();
+    return !bounds||bounds.contains(latlng);
+  }
+
+  function clampToCutout(latlng){
+    const bounds=savedCutoutBounds();
+    if(!bounds||bounds.contains(latlng))return latlng;
+    return L.latLng(
+      Math.max(bounds.getSouth(),Math.min(bounds.getNorth(),latlng.lat)),
+      Math.max(bounds.getWest(),Math.min(bounds.getEast(),latlng.lng))
+    );
+  }
 
   let selectedType=null;
   let sketchPoints=[];
@@ -781,6 +828,10 @@ document.addEventListener("DOMContentLoaded", () => {
       setStatus("Velg en objekttype før du klikker i kartet.");
       return;
     }
+    if(!isInsideCutout(event.latlng)){
+      setStatus("Punktet ligger utenfor kartutsnittet fra steg 1. Hold tegningen innenfor bildet som ble sendt til KI-en.");
+      return;
+    }
     sketchPoints.push(event.latlng);
     redrawSketch();
     $("undoPoint").disabled=sketchPoints.length===0;
@@ -875,7 +926,9 @@ document.addEventListener("DOMContentLoaded", () => {
         icon:L.divIcon({className:"vertex-handle",html:"<div style='width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #111827'></div>",iconSize:[14,14],iconAnchor:[7,7]})
       }).addTo(editGroup);
       handle.on("drag",()=>{
-        latlngs[index]=handle.getLatLng();
+        const clamped=clampToCutout(handle.getLatLng());
+        handle.setLatLng(clamped);
+        latlngs[index]=clamped;
         selectedLayer.setLatLngs(selectedLayer instanceof L.Polygon?[latlngs]:latlngs);
       });
       handle.on("dragend",()=>{saveAutosave();updateStats()});
