@@ -281,6 +281,18 @@ nav button.done b{background:var(--kv-green);color:#fff}
 .story-step{display:flex;align-items:center;gap:8px;font-weight:850;color:#3f3d54}
 .story-step b{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:var(--purple);color:#fff}
 .story-arrow{font-size:1.5rem;color:var(--teal);font-weight:900}
+.result-summary{display:grid;grid-template-columns:minmax(150px,.75fr) minmax(0,1.7fr) minmax(220px,.9fr);gap:12px;margin:12px 0 14px;align-items:stretch}
+.score-card,.summary-card,.summary-metrics{border:1px solid #dfe6ef;background:#fff;border-radius:12px;padding:12px}
+.score-card{display:flex;flex-direction:column;justify-content:center;text-align:center;background:#f5fbff;border-color:#cddfea}
+.score-card span{font-size:.82rem;font-weight:850;color:#536176;text-transform:uppercase}
+.score-card strong{font-size:2.8rem;line-height:1;color:var(--kv-blue);margin:5px 0}
+.score-card small{color:#536176;font-weight:800}
+.summary-card h3{margin:0 0 5px;font-size:1.05rem}
+.summary-card p{margin:0;color:#3f4656;line-height:1.45}
+.summary-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.summary-metrics div{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.summary-metrics b{font-size:1.55rem;color:var(--dark);line-height:1}
+.summary-metrics span{font-size:.78rem;color:#647084;font-weight:800}
 .final-grid{display:grid;gap:14px}
 /* To kolonner ga naer skjermbrede ruter paa store skjermer. Fire kolonner gjor
    plakaten omtrent halvparten saa hoy uten aa miste noe innhold. */
@@ -349,7 +361,7 @@ nav button.done b{background:var(--kv-green);color:#fff}
   .intro-hero{grid-template-columns:1fr}
   .intro-info,.intro-preview{grid-template-columns:1fr 1fr}
   .intro-visual{min-height:360px}
-  .reflection-grid,.mask-card-main{grid-template-columns:1fr}
+  .reflection-grid,.mask-card-main,.result-summary{grid-template-columns:1fr}
 }
 @media(max-width:950px){
   .analyse-simple{grid-template-columns:1fr}

@@ -400,6 +400,23 @@
       <div class="story-step"><b>3</b><span>KI finner objekter</span></div>
     </div>
 
+    <div class="result-summary" aria-live="polite">
+      <div class="score-card">
+        <span>Segmenteringstreff</span>
+        <strong id="matchScore">--</strong>
+        <small id="matchScoreLabel">Legg inn kart og KI-maske</small>
+      </div>
+      <div class="summary-card">
+        <h3>Oppsummering</h3>
+        <p id="finalSummaryText">Resultatet oppdateres når kartet og maskene er klare.</p>
+      </div>
+      <div class="summary-metrics">
+        <div><b id="summaryObjectCount">0</b><span>kartobjekter</span></div>
+        <div><b id="summaryMaskCount">0</b><span>KI-masker</span></div>
+        <div><b id="summaryClassCount">0</b><span>klasser</span></div>
+      </div>
+    </div>
+
     <div class="final-grid final-grid-v19">
       <div class="final-panel">
         <h3>Bildet KI-en fikk</h3>
@@ -455,8 +472,8 @@
       <div>
         <label for="quality">Hvor nøyaktig synes du kartet ble?</label>
         <select id="quality"><option>Veldig nøyaktig</option><option>Ganske nøyaktig</option><option>Usikkert</option></select>
-        <label for="participantName">Navn eller kallenavn (valgfritt)</label>
-        <input id="participantName" placeholder="Navn">
+        <label for="participantName">Lagnavn (valgfritt)</label>
+        <input id="participantName" placeholder="F.eks. Team GeoNinja">
       </div>
     </div>
   </div>

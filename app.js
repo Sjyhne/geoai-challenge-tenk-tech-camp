@@ -1043,6 +1043,27 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${total} objekter totalt: ${parts.join(", ")}.`;
   }
 
+  function scoreLabel(percent){
+    if(percent===null||percent===undefined)return "Ikke beregnet";
+    if(percent>=75)return "Svært godt treff";
+    if(percent>=50)return "Godt treff";
+    if(percent>=25)return "Delvis treff";
+    return "Lavt treff";
+  }
+
+  function scoreSummaryText(percent,objectCount,maskCount,classCount){
+    const scope=resultFilterLabel();
+    if(percent===null||percent===undefined){
+      if(!objectCount&&!maskCount)return `Det mangler både digitale objekter og KI-masker for ${scope}.`;
+      if(!objectCount)return `Det finnes KI-masker, men ingen digitale objekter for ${scope}.`;
+      if(!maskCount)return `Det finnes digitale objekter, men ingen KI-masker for ${scope}.`;
+      return "Sammenligningen er ikke klar ennå.";
+    }
+    return `For ${scope} overlapper KI-segmenteringen og kartet ditt med ${percent} %. `+
+      `Dette er ${scoreLabel(percent).toLowerCase()} basert på ${objectCount} kartobjekt${objectCount===1?"":"er"}, `+
+      `${maskCount} KI-maske${maskCount===1?"":"r"} og ${classCount} klasse${classCount===1?"":"r"}.`;
+  }
+
 
   const resultParts={geojson:false,cutout:false,mask:false};
   function checkResultReady(){if(resultParts.geojson&&resultParts.cutout&&resultParts.mask){missionState.result=true;updateOverallProgress()}}
@@ -1083,6 +1104,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resultFilterLabel(){
     return activeResultType==="all"?"alle typer":(CONFIG[activeResultType]?.label||"valgt type");
+  }
+
+  function visibleResultObjectCount(){
+    return filteredResultFeatures().length;
+  }
+
+  function visibleResultMaskCount(){
+    return maskLayers.filter(layer=>activeResultType==="all"||layer.type===activeResultType).length;
+  }
+
+  function visibleResultClassCount(){
+    const types=new Set();
+    filteredResultFeatures().forEach(feature=>{
+      const type=feature.properties?.objekttype;
+      if(CONFIG[type])types.add(type);
+    });
+    maskLayers.forEach(layer=>{
+      if(CONFIG[layer.type]&&(activeResultType==="all"||layer.type===activeResultType))types.add(layer.type);
+    });
+    return types.size;
+  }
+
+  function updateFinalSummary(){
+    const objectCount=visibleResultObjectCount();
+    const maskCount=visibleResultMaskCount();
+    const classCount=visibleResultClassCount();
+    $("summaryObjectCount").textContent=String(objectCount);
+    $("summaryMaskCount").textContent=String(maskCount);
+    $("summaryClassCount").textContent=String(classCount);
+    $("matchScore").textContent=lastOverlapPercent===null?"--":`${lastOverlapPercent} %`;
+    $("matchScoreLabel").textContent=scoreLabel(lastOverlapPercent);
+    $("finalSummaryText").textContent=scoreSummaryText(lastOverlapPercent,objectCount,maskCount,classCount);
+  }
+
+  function updateFinalTitle(){
+    const base=$("mapTitle").value.trim()||"Mitt GeoAI-kart";
+    const team=$("participantName").value.trim();
+    $("finalTitle").textContent=team?`${base} – ${team}`:base;
   }
 
   function rerenderResultForFilter(){
@@ -1166,8 +1225,8 @@ document.addEventListener("DOMContentLoaded", () => {
     $("resultMapStatus").textContent=`${features.length} objekter ${sourceLabel}. Viser ${resultFilterLabel().toLowerCase()}.`;
     resultParts.geojson=true;checkResultReady();
     if(data?.properties?.kartnavn){
-      $("finalTitle").textContent=data.properties.kartnavn;
       $("mapTitle").value=data.properties.kartnavn;
+      updateFinalTitle();
     }
     renderComparison();
   }
@@ -1626,6 +1685,7 @@ document.addEventListener("DOMContentLoaded", () => {
       image.removeAttribute("src");
       preview.classList.remove("has-image");
       note.textContent=`Mangler ${missing.join(" og ")}.`;
+      updateFinalSummary();
       return;
     }
 
@@ -1675,10 +1735,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "Bare det som ligger innenfor kartutsnittet fra steg 1 blir sammenlignet.";
 
       renderTypeScores(features,W,H,bounds);
+      updateFinalSummary();
     }catch(error){
       console.error(error);
       lastOverlapPercent=null;
       note.textContent="Sammenligningen kunne ikke lages.";
+      updateFinalSummary();
     }
   }
 
@@ -1749,10 +1811,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(a);a.click();a.remove();
   });
 
-  $("participantName").addEventListener("input",()=>{
-    const base=$("mapTitle").value||"Mitt GeoAI-kart";
-    $("finalTitle").textContent=$("participantName").value?`${base} – ${$("participantName").value}`:base;
-  });
+  $("participantName").addEventListener("input",updateFinalTitle);
   function prepareResultMapForScreen(){
     resultMap.invalidateSize(true);
   }
@@ -1918,7 +1977,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "GEOAI CHALLENGE – TENK TECH CAMP KRISTIANSAND",
       "=============================================",
       "",
-      `Deltaker: ${value("participantName")}`,
+      `Lag: ${value("participantName")}`,
       `Kartnavn: ${$("mapTitle").value.trim()||"Mitt digitale kart"}`,
       `Dato: ${new Date().toLocaleDateString("no-NO")}`,
       "",
@@ -1934,6 +1993,9 @@ document.addEventListener("DOMContentLoaded", () => {
       "KI-EN MOT DITT KART",
       lastOverlapPercent===null
         ? "Sammenligningen ble ikke laget."
+        : `Segmenteringstreff: ${lastOverlapPercent} % (${scoreLabel(lastOverlapPercent).toLowerCase()}).`,
+      lastOverlapPercent===null
+        ? ""
         : `Totalt er KI-en og kartet ditt enige om ${lastOverlapPercent} % av området de til sammen dekker.`,
       ...lastTypeScores.map(s=>`  ${s.label}: ${s.percent} % overlapp`),
       "",
@@ -1945,9 +2007,13 @@ document.addEventListener("DOMContentLoaded", () => {
     download("geoai-rapport.txt",report,"text/plain;charset=utf-8");
   });
 
-  $("mapTitle").addEventListener("input",saveAutosave);
+  $("mapTitle").addEventListener("input",()=>{
+    saveAutosave();
+    updateFinalTitle();
+  });
   updateStats();
   const restoredObjects=restoreAutosave();
+  updateFinalSummary();
   setTimeout(()=>{
     digitizeMap.invalidateSize(true);
     const tilePane=digitizeMap.getPane("tilePane");
