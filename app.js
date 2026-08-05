@@ -570,7 +570,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.warn("WebGPU er ikke tilgjengelig:",detail);
       box.hidden=false;
       box.classList.add("bad");
-      box.innerHTML="<b>Denne maskinen støtter ikke WebGPU,</b> som WebSAM trenger for å kjøre modellen. "+
+      box.innerHTML="<b>Denne nettleseren finner ikke WebGPU.</b> SAM 2.1 Small trenger vanligvis WebGPU, "+
+        "men prøv gjerne WebSAM likevel og velg SlimSAM-77 hvis den er tilgjengelig. "+
         "På Linux: lukk alle Chrome-vinduer og start GeoAI med <code>START-GEOAI-LINUX.sh</code>. "+
         "Virker det fortsatt ikke, bruk reserveverktøyet nederst til høyre.";
       $("fallbackTool").open=true;
