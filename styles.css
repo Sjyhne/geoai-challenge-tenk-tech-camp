@@ -101,6 +101,7 @@ nav button.done b{background:var(--kv-green);color:#fff}
   min-height:0;
   margin-inline:auto;
 }
+.cutout-boundary{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px rgba(255,255,255,.9));pointer-events:none}
 .place-search{margin-top:12px}
 .place-search-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
 .place-search-form input{margin-top:5px}

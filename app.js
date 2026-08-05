@@ -622,6 +622,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const featureGroup=L.featureGroup().addTo(digitizeMap);
   const sketchGroup=L.featureGroup().addTo(digitizeMap);
   const editGroup=L.featureGroup().addTo(digitizeMap);
+  let digitizeCutoutLayer=null;
 
   function savedCutoutBounds(){
     try{
@@ -638,6 +639,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const bounds=savedCutoutBounds();
     if(!bounds)return false;
     digitizeMap.setMaxBounds(bounds);
+    if(digitizeCutoutLayer)digitizeMap.removeLayer(digitizeCutoutLayer);
+    digitizeCutoutLayer=L.rectangle(bounds,{
+      color:"#111827",
+      weight:2,
+      dashArray:"8 6",
+      fill:false,
+      interactive:false,
+      className:"cutout-boundary"
+    }).addTo(digitizeMap);
     if(fit){
       digitizeMap.setMinZoom(0);
       digitizeMap.invalidateSize(true);
