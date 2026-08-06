@@ -275,33 +275,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const imageryUrl="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
-  const osmUrl="https://tile.openstreetmap.org/{z}/{x}/{y}.png";
   const imageryOptions={maxZoom:20,crossOrigin:true,attribution:"Tiles © Esri — Esri, Maxar, Earthstar Geographics og bidragsytere"};
-  const osmOptions={maxZoom:19,crossOrigin:true,attribution:"© OpenStreetMap-bidragsytere"};
 
-  // Bakgrunnskart. Alle lagene må sende CORS-hoder, ellers blir canvasen
-  // «tainted» og både kartutsnittet i steg 1 og PDF-kartet i steg 4 feiler.
-  //
-  // Norge i bilder er Kartverkets eget ortofoto og er tydelig skarpere enn Esri,
-  // men den åpne WMS-tjenesten rendrer hver rute på forespørsel. Målt svartid er
-  // 1–8 sekunder med jevnlige tidsavbrudd, mot ca. 0,1 sekund for Esri. Derfor er
-  // Esri fortsatt standard, og Norge i bilder et bevisst valg deltakeren tar.
-  const BASEMAPS={
-    imagery:{create:()=>L.tileLayer(imageryUrl,imageryOptions)},
-    nib:{
-      slow:true,
-      create:()=>L.tileLayer.wms("https://wms.geonorge.no/skwms1/wms.nib",{
-        layers:"ortofoto",
-        format:"image/jpeg",
-        transparent:false,
-        version:"1.3.0",
-        maxZoom:20,
-        crossOrigin:true,
-        attribution:"Ortofoto © Norge i bilder — Kartverket, NIBIO og Statens vegvesen"
-      })
-    },
-    osm:{create:()=>L.tileLayer(osmUrl,osmOptions)}
-  };
+  // Bakgrunnskartet må sende CORS-hoder, ellers blir canvasen «tainted» og både
+  // kartutsnittet i steg 1 og PDF-kartet i steg 4 feiler.
+  function createBaseLayer(){
+    return L.tileLayer(imageryUrl,imageryOptions);
+  }
 
   const exploreMap=L.map("exploreMap",{zoomControl:true}).setView([58.1467,7.9956],16);
   $("goPlace").addEventListener("click",()=>{
@@ -601,21 +581,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Alle tre kartene deler bakgrunnskart, slik at ortofotoet i steg 1, kartet du
   // tegner i steg 2 og plakaten i steg 4 viser samme slags bilde.
-  const activeBaseLayers=new Map();
-  function applyBaseMap(kind){
-    const cfg=BASEMAPS[kind]||BASEMAPS.imagery;
+  function applyBaseMap(){
     [exploreMap,digitizeMap,resultMap].forEach(map=>{
-      const previous=activeBaseLayers.get(map);
-      if(previous)map.removeLayer(previous);
-      const layer=cfg.create();
-      if(cfg.slow)layer.on("tileerror",()=>setCutoutMessage(
-        "Norge i bilder svarer tregt akkurat nå. Velg Esri World Imagery hvis kartet blir hengende."));
-      layer.addTo(map);
-      activeBaseLayers.set(map,layer);
+      createBaseLayer().addTo(map);
     });
   }
-  applyBaseMap($("baseMap").value);
-  $("baseMap").addEventListener("change",()=>applyBaseMap($("baseMap").value));
+  applyBaseMap();
 
   const resultFeatureGroup=L.featureGroup().addTo(resultMap);
   let lastResultBounds=null;
