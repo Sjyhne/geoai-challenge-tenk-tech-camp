@@ -3,6 +3,237 @@
 document.addEventListener("DOMContentLoaded", () => {
   const $ = id => document.getElementById(id);
   const $$ = sel => [...document.querySelectorAll(sel)];
+  const LANGUAGE_KEY="geoai-v20-language";
+  let currentLanguage="no";
+  try{currentLanguage=localStorage.getItem(LANGUAGE_KEY)==="en"?"en":"no"}catch(_){}
+
+  const TYPE_LABELS={
+    no:{building:"Bygg",road:"Vei",forest:"Skog",water:"Vann"},
+    en:{building:"Buildings",road:"Roads",forest:"Forest",water:"Water"}
+  };
+  const UI_EN={
+    "Utforsk verden ovenfra, bruk KI og bygg ditt eget digitale kart.":"Explore the world from above, use AI, and build your own digital map.",
+    "↺ Start på nytt":"↺ Restart",
+    "Start":"Start",
+    "Finn område":"Find area",
+    "Bygg kart":"Build map",
+    "Bruk KI":"Use AI",
+    "Resultat":"Result",
+    "Bli geomatiker for en dag":"Be a geomatics expert for a day",
+    "Du skal gjøre fire oppgaver: finne et område, tegne ditt eget kart, prøve å gjenskape kartet med KI og sette sammen et ferdig resultat.":"You will complete four tasks: find an area, draw your own map, try to recreate it with AI, and assemble a final result.",
+    "Start oppdraget →":"Start the mission →",
+    "Du trenger ikke kunne kode.":"You do not need to know how to code.",
+    "Det viktigste er å være nysgjerrig og prøve deg fram.":"The most important thing is to stay curious and try things out.",
+    "Dette skal du gjøre":"What you will do",
+    "Finn ditt område":"Find your area",
+    "Zoom inn på skolen, hjemstedet eller stranda i ekte flyfoto.":"Zoom in on your school, hometown, or beach in real aerial imagery.",
+    "Tegn ditt eget kart":"Draw your own map",
+    "Marker bygg, veier, skog og vann – akkurat som en geomatiker.":"Mark buildings, roads, forest, and water, just like a geomatics expert.",
+    "La KI-en prøve":"Let the AI try",
+    "Bruk KI-en til å finne de samme objektene som du tegnet selv.":"Use the AI to find the same objects you drew yourself.",
+    "Hvem traff best?":"Who matched best?",
+    "Kartet ditt legges oppå KI-ens maske. Grønt betyr at dere er enige.":"Your map is placed over the AI mask. Green means you agree.",
+    "45 minutter":"45 minutes",
+    "Jobb i ditt eget tempo":"Work at your own pace",
+    "Ingen forkunnskaper":"No prior knowledge",
+    "Bare nysgjerrighet":"Just curiosity",
+    "Kristiansand":"Kristiansand",
+    "Bruk et område du kjenner":"Use an area you know",
+    "Oppdrag 1: Finn et område":"Mission 1: Find an area",
+    "Velg et sted du kjenner.":"Choose a place you know.",
+    "Finn skolen, hjemstedet eller et interessant område.":"Find your school, hometown, or an interesting area.",
+    "Søk etter adresse eller sted":"Search for an address or place",
+    "Søk":"Search",
+    "Din hypotese":"Your hypothesis",
+    "Hypotesen blir med i rapporten du laster ned i steg 4.":"Your hypothesis is included in the report you download in step 4.",
+    "Midtstill objektet du vil analysere i kartet. Når du går videre lagres et":"Center the object you want to analyze on the map. When you continue, a",
+    "kvadratisk utsnitt automatisk, og det lastes ned som PNG.":"square cutout is saved automatically and downloaded as a PNG.",
+    "Etter at du har tegnet ditt eget kart, laster du den filen opp i WebSAM.":"After drawing your own map, upload that file to WebSAM.",
+    "Lagre utsnitt og bygg kart →":"Save cutout and build map →",
+    "Gjenskap kartet ditt med KI":"Recreate your map with AI",
+    "Bruk kartbildet fra steg 1 og prøv å få modellen til å finne de samme objektene som du tegnet i steg 2.":"Use the map image from step 1 and try to get the model to find the same objects you drew in step 2.",
+    "Åpne WebSAM 2.1 Small":"Open WebSAM 2.1 Small",
+    "Åpner i en ny fane – kom tilbake hit når du er ferdig":"Opens in a new tab. Come back here when you are done.",
+    "Velg modellen SAM 2.1 Small":"Choose the SAM 2.1 Small model",
+    "Den står i modellmenyen øverst i WebSAM.":"It is in the model menu at the top of WebSAM.",
+    "Last opp kartbildet fra steg 1":"Upload the map image from step 1",
+    "PNG-filen som ble lastet ned i steg 1.":"The PNG file downloaded in step 1.",
+    "Venstreklikk på et objekt du tegnet":"Left-click an object you drew",
+    "Dette forteller KI-en:":"This tells the AI:",
+    "«Ta med dette»":"\"Include this\"",
+    "Lag én eller flere masker, og importer dem under riktig objekttype.":"Create one or more masks, and import them under the correct object type.",
+    "Høyreklikk på feil områder":"Right-click incorrect areas",
+    "«Ikke ta med dette»":"\"Do not include this\"",
+    "Lagre masken med":"Save the mask with",
+    "Gjør dette i WebSAM før du går tilbake hit. Har du flere objekter eller typer,":"Do this in WebSAM before you come back here. If you have several objects or types,",
+    "kan du lagre flere masker – de slås sammen automatisk i steg 4.":"you can save several masks. They are merged automatically in step 4.",
+    "Har du husket å lagre masken?":"Did you remember to save the mask?",
+    "Trykk":"Press",
+    "i WebSAM for hver objekttype KI-en skal gjenskape.":"in WebSAM for each object type the AI should recreate.",
+    "Uten maskefilene kan du ikke sammenligne KI-en med ditt eget kart i steg 4.":"Without the mask files, you cannot compare the AI with your own map in step 4.",
+    "Neste: Se resultatet →":"Next: See the result →",
+    "Kartbildet ditt":"Your map image",
+    "Gå til steg 1 og trykk «Lagre kartutsnitt».":"Go to step 1 and press \"Save map cutout\".",
+    "Kartbildet er ikke lagret ennå.":"The map image has not been saved yet.",
+    "Fungerer ikke WebSAM?":"WebSAM not working?",
+    "Reserveverktøyet gjør det samme, men uten WebGPU-testen først.":"The backup tool does the same thing, but without the WebGPU test first.",
+    "Åpne reserveverktøy":"Open backup tool",
+    "Oppdrag 2: Lag ditt eget kart":"Mission 2: Make your own map",
+    "Bygg":"Buildings",
+    "Vei":"Roads",
+    "Skog":"Forest",
+    "Vann":"Water",
+    "Trykk på fargesirkelen for å velge din egen kartfarge.":"Press the color circle to choose your own map color.",
+    "Egen karttype":"Custom map type",
+    "Legg til":"Add",
+    "Rediger valgt":"Edit selected",
+    "Slett valgt":"Delete selected",
+    "Tøm hele kartet":"Clear the whole map",
+    "Kartutfordringen":"Map challenge",
+    "Kartnavn":"Map name",
+    "Neste: Bruk KI →":"Next: Use AI →",
+    "Starter kartet …":"Starting the map ...",
+    "Fullfør objekt":"Finish object",
+    "Angre punkt":"Undo point",
+    "Avbryt":"Cancel",
+    "Slipp inn KI-maskene fra WebSAM":"Import the AI masks from WebSAM",
+    "Kartet og ortofotoet hentes automatisk. Legg til maskene KI-en laget for":"The map and aerial photo are loaded automatically. Add the masks the AI made for",
+    "objektene du tegnet, så slås de sammen til én sort/hvit maske og et fargelagt KI-overlegg.":"the objects you drew, then they are merged into one black/white mask and a colored AI overlay.",
+    "Venter på kartet fra steg 2 …":"Waiting for the map from step 2 ...",
+    "Venter på kartutsnitt fra steg 1 …":"Waiting for the map cutout from step 1 ...",
+    "Velg hva masken viser, og hent PNG-fila fra WebSAM:":"Choose what the mask shows, and select the PNG file from WebSAM:",
+    "Ingen masker lastet opp ennå.":"No masks uploaded yet.",
+    "Tøm KI-masker":"Clear AI masks",
+    "Last ned sort/hvit maske":"Download black/white mask",
+    "Noe mangler? Last opp kart eller ortofoto manuelt":"Missing something? Upload map or aerial photo manually",
+    "Åpne kart (GeoJSON)":"Open map (GeoJSON)",
+    "Bytt ortofoto":"Replace aerial photo",
+    "Mitt GeoAI-kart":"My GeoAI map",
+    "Vis klasse":"Show class",
+    "Alle typer":"All types",
+    "Ortofoto":"Aerial photo",
+    "Digitalt kart":"Digital map",
+    "KI finner objekter":"AI finds objects",
+    "Segmenteringstreff":"Segmentation match",
+    "Legg inn kart og KI-maske":"Add a map and AI mask",
+    "Oppsummering":"Summary",
+    "Resultatet oppdateres når kartet og maskene er klare.":"The result updates when the map and masks are ready.",
+    "kartobjekter":"map objects",
+    "KI-masker":"AI masks",
+    "klasser":"classes",
+    "Bildet KI-en fikk":"The image the AI received",
+    "Ingen ortofoto lastet opp":"No aerial photo uploaded",
+    "Dette fant KI-en":"What the AI found",
+    "Slipp inn masker fra WebSAM":"Import masks from WebSAM",
+    "Hver maske får sin egen farge her.":"Each mask gets its own color here.",
+    "Sort-hvit maske":"Black/white mask",
+    "Ingen WebSAM-maske lastet opp":"No WebSAM mask uploaded",
+    "Hvit:":"White:",
+    "valgt objekt":"selected object",
+    "Sort:":"Black:",
+    "bakgrunn":"background",
+    "Mitt digitale kart":"My digital map",
+    "Kartet fra steg 2 vises her automatisk.":"The map from step 2 is shown here automatically.",
+    "KI-en mot ditt kart":"AI versus your map",
+    "Trenger både en KI-maske og objekter fra steg 2.":"Needs both an AI mask and objects from step 2.",
+    "Begge er enige":"Both agree",
+    "Bare KI-en":"Only the AI",
+    "Bare ditt kart":"Only your map",
+    "Her legges KI-masken og objektene dine oppå hverandre.":"Here the AI mask and your objects are placed on top of each other.",
+    "Hva klarte du bedre enn KI-en?":"What did you do better than the AI?",
+    "Hvor nøyaktig synes du kartet ble?":"How accurate do you think the map is?",
+    "Veldig nøyaktig":"Very accurate",
+    "Ganske nøyaktig":"Quite accurate",
+    "Usikkert":"Unsure",
+    "Lagnavn (valgfritt)":"Team name (optional)",
+    "Lagre som PDF":"Save as PDF",
+    "Last ned rapport":"Download report",
+    "Fullfør GeoAI Challenge":"Finish GeoAI Challenge",
+    "Gratulerer!":"Congratulations!",
+    "Du har laget ditt første GeoAI-kart.":"You have made your first GeoAI map.",
+    "Tolket ortofoto":"Interpreted aerial imagery",
+    "Brukt en KI":"Used AI",
+    "Digitalisert kartdata":"Digitized map data",
+    "Eksportert kart":"Exported a map",
+    "Se resultatet mitt":"See my result",
+    "GeoAI Challenge · TENK Tech Camp Kristiansand · Kartverket":"GeoAI Challenge · TENK Tech Camp Kristiansand · Kartverket"
+  };
+  const ATTR_EN={
+    "Nullstill alt og start forfra":"Reset everything and start over",
+    "F.eks. Tangen videregående skole eller Storgata 1 Oslo":"E.g. Tangen videregående skole or Storgata 1 Oslo",
+    "Hvilke objekter tror du blir lettest eller vanskeligst for KI-en å gjenskape?":"Which objects do you think will be easiest or hardest for the AI to recreate?",
+    "Velg farge for bygg":"Choose color for buildings",
+    "Velg farge for vei":"Choose color for roads",
+    "Velg farge for skog":"Choose color for forest",
+    "Velg farge for vann":"Choose color for water",
+    "Velg farge":"Choose color",
+    "F.eks. strand, brygge, ballbane":"E.g. beach, pier, ball field",
+    "Velg farge for egen karttype":"Choose color for custom map type",
+    "Mitt kart over skoleområdet":"My map of the school area",
+    "Eksempel: Jeg klarte lettere å forstå hvor bygningen sluttet og veien begynte.":"Example: I found it easier to understand where the building ended and the road began.",
+    "F.eks. Team GeoNinja":"E.g. Team GeoNinja"
+  };
+  const originalTextNodes=new WeakMap();
+  const originalAttributes=new WeakMap();
+
+  function translateText(text){
+    if(currentLanguage!=="en")return text;
+    return UI_EN[text]||text;
+  }
+
+  function translateAttributes(element){
+    ["placeholder","title","aria-label","alt"].forEach(attr=>{
+      if(!element.hasAttribute(attr))return;
+      let originals=originalAttributes.get(element);
+      if(!originals){originals={};originalAttributes.set(element,originals)}
+      if(!(attr in originals))originals[attr]=element.getAttribute(attr);
+      const original=originals[attr];
+      element.setAttribute(attr,currentLanguage==="en"?(ATTR_EN[original]||UI_EN[original]||original):original);
+    });
+  }
+
+  function translateStaticPage(){
+    document.documentElement.lang=currentLanguage==="en"?"en":"no";
+    const toggle=$("languageToggle");
+    if(toggle){
+      toggle.textContent=currentLanguage==="en"?"🇳🇴 Norsk":"🇬🇧 English";
+      toggle.title=currentLanguage==="en"?"Bytt til norsk":"Change to English";
+      toggle.setAttribute("aria-label",toggle.title);
+    }
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode(node){
+        if(node.parentElement?.closest("script,style"))return NodeFilter.FILTER_REJECT;
+        return node.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes=[];
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      if(!originalTextNodes.has(node))originalTextNodes.set(node,node.nodeValue);
+      const original=originalTextNodes.get(node);
+      const leading=original.match(/^\s*/)?.[0]||"";
+      const trailing=original.match(/\s*$/)?.[0]||"";
+      const key=original.trim();
+      node.nodeValue=leading+translateText(key)+trailing;
+    });
+    document.querySelectorAll("[placeholder],[title],[aria-label],[alt]").forEach(translateAttributes);
+  }
+
+  function setLanguage(language){
+    currentLanguage=language==="en"?"en":"no";
+    try{localStorage.setItem(LANGUAGE_KEY,currentLanguage)}catch(_){}
+    Object.entries(TYPE_LABELS[currentLanguage]).forEach(([type,label])=>{
+      if(CONFIG[type])CONFIG[type].label=label;
+    });
+    renderTypeButtons();
+    renderMaskTypeButtons();
+    renderMapLegend();
+    renderResultTypeFilter();
+    renderOverlayLegend();
+    updateStats();
+    updateFinalSummary();
+    translateStaticPage();
+  }
 
   // Fire faste objekttyper er starten. Deltakerne kan legge til noen egne
   // typer i tillegg, slik at WebSAM kan prøve å gjenskape akkurat det de tegnet.
@@ -1991,6 +2222,8 @@ document.addEventListener("DOMContentLoaded", () => {
     saveAutosave();
     updateFinalTitle();
   });
+  $("languageToggle")?.addEventListener("click",()=>setLanguage(currentLanguage==="en"?"no":"en"));
+  setLanguage(currentLanguage);
   updateStats();
   const restoredObjects=restoreAutosave();
   updateFinalSummary();

@@ -40,6 +40,8 @@ header h1{margin:4px 0}header p{margin:0;opacity:.92}
 .badge{font-size:.78rem;font-weight:800;background:#fff;color:var(--kv-blue);padding:5px 9px;border-radius:999px}
 .restart-button{flex:none;font-size:.85rem;font-weight:750;padding:8px 13px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.55);color:#fff}
 .restart-button:hover{background:rgba(255,255,255,.26)}
+.language-toggle{flex:none;font-size:.85rem;font-weight:800;padding:8px 12px;background:#fff;color:var(--kv-blue);border:1px solid rgba(255,255,255,.65)}
+.language-toggle:hover{background:#eaf1f8}
 /* Kartverket har ingen negativ logo publisert, saa den positive settes paa en
    hvit flate i stedet for aa fargelegges om. */
 .header-side{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
