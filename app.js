@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Trykk på fargesirkelen for å velge din egen kartfarge.":"Press the color circle to choose your own map color.",
     "Egen karttype":"Custom map type",
     "Legg til":"Add",
+    "Fjern":"Remove",
     "Rediger valgt":"Edit selected",
     "Slett valgt":"Delete selected",
     "Tøm hele kartet":"Clear the whole map",
@@ -148,8 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "Ganske nøyaktig":"Quite accurate",
     "Usikkert":"Unsure",
     "Lagnavn (valgfritt)":"Team name (optional)",
-    "Lagre som PDF":"Save as PDF",
-    "Last ned rapport":"Download report",
     "Fullfør GeoAI Challenge":"Finish GeoAI Challenge",
     "Gratulerer!":"Congratulations!",
     "Du har laget ditt første GeoAI-kart.":"You have made your first GeoAI map.",
@@ -172,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Velg farge":"Choose color",
     "F.eks. strand, brygge, ballbane":"E.g. beach, pier, ball field",
     "Velg farge for egen karttype":"Choose color for custom map type",
+    "Fjern egen karttype":"Remove custom map type",
     "Mitt kart over skoleområdet":"My map of the school area",
     "Eksempel: Jeg klarte lettere å forstå hvor bygningen sluttet og veien begynte.":"Example: I found it easier to understand where the building ended and the road began.",
     "F.eks. Team GeoNinja":"E.g. Team GeoNinja"
@@ -379,14 +379,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if(marker)marker.textContent=complete?"✓":marker.dataset.stepNumber;
     });
     try{localStorage.setItem("geoai-v20-progress",JSON.stringify(missionState))}catch(_){}
-  }
-
-
-  function download(name, text, type="application/json"){
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(new Blob([text],{type}));
-    a.download=name; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   }
 
   // Tabs
@@ -936,14 +928,75 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function renderCustomTypeList(){
+    const list=$("customTypeList");
+    if(!list)return;
+    list.innerHTML="";
+    customTypeEntries().forEach(([type,cfg])=>{
+      const item=document.createElement("li");
+      item.innerHTML=
+        `<span class="mask-swatch" style="background:${selectedColors[type]||cfg.defaultColor}"></span>`+
+        `<span></span>`+
+        `<button type="button" class="custom-type-delete" data-custom-type="${type}" title="Fjern egen karttype" aria-label="Fjern egen karttype">✕</button>`;
+      item.querySelector("span:nth-child(2)").textContent=cfg.label;
+      list.appendChild(item);
+    });
+  }
+
   function updateCustomTypeUi(message="",tone=""){
     const count=customTypeEntries().length;
     $("customTypeCount").textContent=`${count}/${MAX_CUSTOM_TYPES}`;
     $("addCustomType").disabled=count>=MAX_CUSTOM_TYPES;
+    renderCustomTypeList();
     const box=$("customTypeStatus");
     box.textContent=message;
     box.classList.toggle("bad",tone==="bad");
+    translateStaticPage();
   }
+
+  function removeCustomType(type){
+    const cfg=CONFIG[type];
+    if(!cfg?.custom)return;
+    const featureMatches=featureGroup.getLayers().filter(layer=>layer.feature?.properties?.objekttype===type);
+    const maskMatches=maskLayers.filter(layer=>layer.type===type);
+    if((featureMatches.length||maskMatches.length)&&!confirm(
+      `${cfg.label} er i bruk. Vil du slette kartobjekter og KI-masker for denne typen?`
+    ))return;
+
+    featureMatches.forEach(layer=>featureGroup.removeLayer(layer));
+    if(selectedLayer&&selectedLayer.feature?.properties?.objekttype===type){
+      selectedLayer=null;
+      leaveEditMode();
+    }
+    for(let i=maskLayers.length-1;i>=0;i--)if(maskLayers[i].type===type)maskLayers.splice(i,1);
+    if(selectedType===type){
+      selectedType=null;
+      clearSketch();
+      digitizeMap.getContainer().style.cursor="";
+      digitizeMap.getContainer().classList.remove("leaflet-crosshair");
+    }
+    if(activeResultType===type)activeResultType="all";
+    const label=cfg.label;
+    delete CONFIG[type];
+    delete selectedColors[type];
+    saveCustomTypes();
+    renderTypeButtons();
+    renderMaskTypeButtons();
+    renderMapLegend();
+    renderResultTypeFilter();
+    renderOverlayLegend();
+    updateStats();
+    saveAutosave();
+    if(maskMatches.length)processMasks();else renderComparison();
+    updateCustomTypeUi(`${label} er slettet.`);
+    translateStaticPage();
+  }
+
+  $("customTypeList").addEventListener("click",event=>{
+    const button=event.target.closest(".custom-type-delete");
+    if(!button)return;
+    removeCustomType(button.dataset.customType);
+  });
 
   function addCustomTypeFromForm(){
     const name=$("customTypeName").value.trim().replace(/\s+/g," ");
@@ -1246,16 +1299,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updateStats();
       return featureGroup.getLayers().length;
     }catch(_){return 0}
-  }
-
-  // Oppsummering av det digitaliserte kartet som ren tekst, til nedlastet rapport.
-  function objectSummaryText(){
-    const c=counts(), total=Object.values(c).reduce((a,b)=>a+b,0);
-    if(!total)return "Ingen objekter er digitalisert.";
-    const parts=Object.entries(c)
-      .filter(([,n])=>n>0)
-      .map(([type,n])=>`${n} ${CONFIG[type].label.toLowerCase()}`);
-    return `${total} objekter totalt: ${parts.join(", ")}.`;
   }
 
   function scoreLabel(percent){
@@ -2171,9 +2214,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  $("printResult").addEventListener("click",()=>promptResultPdf($("printResult")));
-
-
   function showCompletion(){
     missionState.result=true;updateOverallProgress();
     const overlay=$("completionOverlay");overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");
@@ -2186,45 +2226,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   $("closeCompletion").addEventListener("click",()=>{$("completionOverlay").classList.remove("open");$("completionOverlay").setAttribute("aria-hidden","true")});
   $("completionOverlay").addEventListener("click",e=>{if(e.target===$("completionOverlay"))$("closeCompletion").click()});
-
-  $("downloadReport").addEventListener("click",()=>{
-    const value=id=>$(id).value.trim()||"Ikke besvart";
-    const maskLine=maskLayers.length
-      ? `${maskLayers.length} maske(r): ${maskLayers.map(l=>CONFIG[l.type]?.label||"Maske").join(", ")}`
-      : "Ingen masker lastet opp";
-    const report=[
-      "GEOAI CHALLENGE – TENK TECH CAMP KRISTIANSAND",
-      "=============================================",
-      "",
-      `Lag: ${value("participantName")}`,
-      `Kartnavn: ${$("mapTitle").value.trim()||"Mitt digitale kart"}`,
-      `Dato: ${new Date().toLocaleDateString("no-NO")}`,
-      "",
-      "STEG 1 – OMRÅDE",
-      `Hypotese: ${value("hypothesis")}`,
-      "",
-      "STEG 2 – DIGITALT KART",
-      objectSummaryText(),
-      "",
-      "STEG 3 – KI I WEBSAM",
-      maskLine,
-      "",
-      "KI-EN MOT DITT KART",
-      lastOverlapPercent===null
-        ? "Sammenligningen ble ikke laget."
-        : `Segmenteringstreff: ${lastOverlapPercent} % (${scoreLabel(lastOverlapPercent).toLowerCase()}).`,
-      lastOverlapPercent===null
-        ? ""
-        : `Totalt er KI-en og kartet ditt enige om ${lastOverlapPercent} % av området de til sammen dekker.`,
-      ...lastTypeScores.map(s=>`  ${s.label}: ${s.percent} % overlapp`),
-      "",
-      "STEG 4 – REFLEKSJON",
-      `Hva klarte du bedre enn KI-en? ${value("reflection")}`,
-      `Vurdert nøyaktighet: ${$("quality").value}`,
-      ""
-    ].join("\n");
-    download("geoai-rapport.txt",report,"text/plain;charset=utf-8");
-  });
 
   $("mapTitle").addEventListener("input",()=>{
     saveAutosave();
