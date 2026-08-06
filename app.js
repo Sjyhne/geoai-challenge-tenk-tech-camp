@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "Oppdrag 1: Finn et område":"Mission 1: Find an area",
     "Velg et sted du kjenner.":"Choose a place you know.",
     "Finn skolen, hjemstedet eller et interessant område.":"Find your school, hometown, or an interesting area.",
+    "Hurtigvalg":"Quick picks",
+    "Vis stedet":"Show place",
     "Søk etter adresse eller sted":"Search for an address or place",
     "Søk":"Search",
     "Din hypotese":"Your hypothesis",
@@ -160,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   const ATTR_EN={
     "Nullstill alt og start forfra":"Reset everything and start over",
+    "Andre steder":"Other places",
     "F.eks. Tangen videregående skole eller Storgata 1 Oslo":"E.g. Tangen videregående skole or Storgata 1 Oslo",
     "Hvilke objekter tror du blir lettest eller vanskeligst for KI-en å gjenskape?":"Which objects do you think will be easiest or hardest for the AI to recreate?",
     "Velg farge for bygg":"Choose color for buildings",
@@ -182,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function translateAttributes(element){
-    ["placeholder","title","aria-label","alt"].forEach(attr=>{
+    ["placeholder","title","aria-label","alt","label"].forEach(attr=>{
       if(!element.hasAttribute(attr))return;
       let originals=originalAttributes.get(element);
       if(!originals){originals={};originalAttributes.set(element,originals)}
@@ -216,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const key=original.trim();
       node.nodeValue=leading+translateText(key)+trailing;
     });
-    document.querySelectorAll("[placeholder],[title],[aria-label],[alt]").forEach(translateAttributes);
+    document.querySelectorAll("[placeholder],[title],[aria-label],[alt],[label]").forEach(translateAttributes);
   }
 
   function setLanguage(language){
@@ -515,6 +518,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const exploreMap=L.map("exploreMap",{zoomControl:true}).setView([58.1467,7.9956],16);
+  $("goPlace").addEventListener("click",()=>{
+    const [lat,lon,zoom]=$("placeSelect").value.split(",").map(Number);
+    exploreMap.invalidateSize(true);
+    exploreMap.flyTo([lat,lon],zoom,{duration:0.7});
+  });
   let selectedMapView=null;
   function rememberSelectedMapView(){
     const center=exploreMap.getCenter();
