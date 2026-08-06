@@ -284,11 +284,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const exploreMap=L.map("exploreMap",{zoomControl:true}).setView([58.1467,7.9956],16);
-  $("goPlace").addEventListener("click",()=>{
-    const [lat,lon,zoom]=$("placeSelect").value.split(",").map(Number);
-    exploreMap.invalidateSize(true);
-    exploreMap.flyTo([lat,lon],zoom,{duration:0.7});
-  });
   let selectedMapView=null;
   function rememberSelectedMapView(){
     const center=exploreMap.getCenter();
