@@ -207,7 +207,7 @@
         <div class="workflow-step save">
           <span class="step-number">5</span>
           <div>
-            <h3>Lagre masken med <kbd>Shift</kbd> + <kbd>D</kbd></h3>
+            <h3>Lagre masken med <kbd>D</kbd></h3>
             <p>Gjør dette i WebSAM før du går tilbake hit. Har du flere objekter eller typer,
               kan du lagre flere masker – de slås sammen automatisk i steg 4.</p>
           </div>
@@ -216,7 +216,7 @@
 
       <div class="save-reminder">
         <b>Har du husket å lagre masken?</b>
-        <p>Trykk <kbd>Shift</kbd> + <kbd>D</kbd> i WebSAM for hver objekttype KI-en skal gjenskape.
+        <p>Trykk <kbd>D</kbd> i WebSAM for hver objekttype KI-en skal gjenskape.
           Uten maskefilene kan du ikke sammenligne KI-en med ditt eget kart i steg 4.</p>
       </div>
       <button type="button" class="next-step" data-next="result">Neste: Se resultatet →</button>
@@ -363,13 +363,6 @@
     </details>
   </article>
 
-  <div class="result-filter card">
-    <label for="resultTypeFilter">Vis klasse</label>
-    <select id="resultTypeFilter">
-      <option value="all">Alle typer</option>
-    </select>
-  </div>
-
   <div class="final-board card">
     <div class="final-board-header">
       <div>
@@ -377,6 +370,12 @@
         <h2 id="finalTitle">Mitt GeoAI-kart</h2>
       </div>
       <div class="final-board-brand">
+        <div class="result-filter">
+          <label for="resultTypeFilter">Vis klasse</label>
+          <select id="resultTypeFilter">
+            <option value="all">Alle typer</option>
+          </select>
+        </div>
         <div class="result-badge">GEO + AI</div>
         <img class="poster-logo" src="kartverket-logo.svg" alt="Kartverket">
       </div>

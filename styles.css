@@ -267,9 +267,9 @@ nav button.done b{background:var(--kv-green);color:#fff}
 .mask-tools button{font-size:.88rem;padding:10px}
 .manual-upload{margin-top:14px;border-top:1px solid var(--line);padding-top:4px}
 .manual-upload summary{cursor:pointer;padding:9px 2px;font-weight:750;font-size:.88rem;color:var(--muted)}
-.result-filter{display:flex;align-items:center;gap:12px;max-width:430px;margin:0 0 14px auto;padding:10px 12px}
+.result-filter{display:flex;align-items:center;gap:9px;max-width:320px;margin:0;padding:0}
 .result-filter label{margin:0;white-space:nowrap}
-.result-filter select{margin:0}
+.result-filter select{margin:0;min-width:150px}
 
 .final-board{border:3px solid #cdd9e6;background:#fff;position:relative}
 .final-board:before{content:"GEOAI CHALLENGE";position:absolute;right:18px;bottom:14px;font-weight:950;letter-spacing:.08em;color:#dbe6f1;font-size:1.1rem}

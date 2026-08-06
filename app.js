@@ -1918,8 +1918,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  $("printResult").addEventListener("click",async()=>{
-    const button=$("printResult");
+  async function promptResultPdf(button){
     const original=button.textContent;
     button.disabled=true;
     button.textContent="⏳ Klargjør kartbildet …";
@@ -1936,7 +1935,9 @@ document.addEventListener("DOMContentLoaded", () => {
       button.disabled=false;
       button.textContent=original;
     }
-  });
+  }
+
+  $("printResult").addEventListener("click",()=>promptResultPdf($("printResult")));
 
 
   function showCompletion(){
@@ -1945,7 +1946,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const colors=["#ec5b91","#6f43d6","#39a9dc","#ffd55a","#42b870"],area=$("confettiArea");area.innerHTML="";
     for(let i=0;i<55;i++){const piece=document.createElement("i");piece.className="confetti-piece";piece.style.left=`${Math.random()*100}%`;piece.style.background=colors[i%colors.length];piece.style.animationDelay=`${Math.random()*.8}s`;area.appendChild(piece)}
   }
-  $("finishChallenge").addEventListener("click",showCompletion);
+  $("finishChallenge").addEventListener("click",async()=>{
+    await promptResultPdf($("finishChallenge"));
+    showCompletion();
+  });
   $("closeCompletion").addEventListener("click",()=>{$("completionOverlay").classList.remove("open");$("completionOverlay").setAttribute("aria-hidden","true")});
   $("completionOverlay").addEventListener("click",e=>{if(e.target===$("completionOverlay"))$("closeCompletion").click()});
 
