@@ -161,10 +161,6 @@ nav button.done b{background:var(--kv-green);color:#fff}
 .analysis-image-preview.has-image span{display:none}
 /* Paaminnelse foer deltakeren gaar videre. Steg 2 kan ikke sjekkes automatisk
    her, saa dette er det naermeste vi kommer en kontroll paa selve fanen. */
-.save-reminder{margin-top:18px;padding:14px 16px;border-radius:13px;background:#fff8dc;border:2px solid #e8cd63}
-.save-reminder b{display:block;font-size:1.05rem;margin-bottom:4px}
-.save-reminder p{margin:0;line-height:1.45;color:#6b5a1e}
-.save-reminder kbd{background:#fff;border:1px solid #d9c890;border-radius:5px;padding:2px 6px;font-family:inherit;font-weight:800}
 .fallback-tool{margin-top:12px;border:1px solid #dce3ed;border-radius:12px;background:#fafbfe}
 .fallback-tool summary{cursor:pointer;padding:11px 13px;font-weight:800;font-size:.92rem}
 .fallback-tool p,.fallback-tool a{margin:0 13px 13px}
