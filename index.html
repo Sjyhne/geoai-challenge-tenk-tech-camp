@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
     onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
   <link rel="stylesheet" href="leaflet-fallback.css">
-  <link rel="stylesheet" href="styles.css?build=20260914-techpoint-future">
+  <link rel="stylesheet" href="styles.css?build=20260914-bruk-ki">
 </head>
 <body>
 <header class="site-header">
@@ -173,37 +173,25 @@
       </a>
       <div id="gpuStatus" class="step-message" hidden></div>
 
+      <div class="save-reminder">
+        <b>Har du husket å lagre masken?</b>
+        <p>Trykk <kbd>D</kbd> i WebSAM for hver objekttype KI-en skal gjenskape.
+          Uten maskefilene kan du ikke sammenligne KI-en med ditt eget kart i steg 4.</p>
+      </div>
+
+      <h3 class="workflow-title">Slik gjør du det i WebSAM</h3>
       <div class="websam-workflow">
         <div class="workflow-step">
           <span class="step-number">1</span>
           <div>
             <h3>Velg modellen SAM 2.1 Small</h3>
             <p>Den står i modellmenyen øverst i WebSAM.</p>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <span class="step-number">2</span>
-          <div>
             <h3>Last opp kartbildet fra steg 1</h3>
             <p>PNG-filen som ble lastet ned i steg 1.</p>
           </div>
         </div>
-        <div class="workflow-step positive">
-          <span class="step-number">3</span>
-          <div>
-            <h3>Venstreklikk på et objekt du tegnet</h3>
-            <p>Dette forteller KI-en: <b>«Ta med dette»</b>. Lag én eller flere masker, og importer dem under riktig objekttype.</p>
-          </div>
-        </div>
-        <div class="workflow-step negative">
-          <span class="step-number">4</span>
-          <div>
-            <h3>Høyreklikk på feil områder</h3>
-            <p>Dette forteller KI-en: <b>«Ikke ta med dette»</b>.</p>
-          </div>
-        </div>
         <div class="workflow-step save">
-          <span class="step-number">5</span>
+          <span class="step-number">2</span>
           <div>
             <h3>Lagre masken med <kbd>D</kbd></h3>
             <p>Gjør dette i WebSAM før du går tilbake hit. Har du flere objekter eller typer,
@@ -212,11 +200,22 @@
         </div>
       </div>
 
-      <div class="save-reminder">
-        <b>Har du husket å lagre masken?</b>
-        <p>Trykk <kbd>D</kbd> i WebSAM for hver objekttype KI-en skal gjenskape.
-          Uten maskefilene kan du ikke sammenligne KI-en med ditt eget kart i steg 4.</p>
-      </div>
+      <details class="websam-tips">
+        <summary>Tips: slik styrer du KI-en</summary>
+        <div class="workflow-step positive">
+          <div>
+            <h3>Venstreklikk på et objekt du tegnet</h3>
+            <p>Dette forteller KI-en: <b>«Ta med dette»</b>. Lag én eller flere masker, og importer dem under riktig objekttype.</p>
+          </div>
+        </div>
+        <div class="workflow-step negative">
+          <div>
+            <h3>Høyreklikk på feil områder</h3>
+            <p>Dette forteller KI-en: <b>«Ikke ta med dette»</b>.</p>
+          </div>
+        </div>
+      </details>
+
       <button type="button" class="next-step" data-next="result">Neste: Se resultatet →</button>
     </article>
 
@@ -492,6 +491,6 @@
   onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"
   onerror="this.onerror=null;this.src='https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js'"></script>
-<script src="app.js?build=20260914-techpoint-future"></script>
+<script src="app.js?build=20260914-bruk-ki"></script>
 </body>
 </html>

@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "Gjenskap kartet ditt med KI":"Recreate your map with AI",
     "Bruk kartbildet fra steg 1 og prøv å få modellen til å finne de samme objektene som du tegnet i steg 2.":"Use the map image from step 1 and try to get the model to find the same objects you drew in step 2.",
     "Åpne WebSAM 2.1 Small":"Open WebSAM 2.1 Small",
+    "Slik gjør du det i WebSAM":"How to do it in WebSAM",
+    "Tips: slik styrer du KI-en":"Tip: how to steer the AI",
     "Åpner i en ny fane – kom tilbake hit når du er ferdig":"Opens in a new tab. Come back here when you are done.",
     "Velg modellen SAM 2.1 Small":"Choose the SAM 2.1 Small model",
     "Den står i modellmenyen øverst i WebSAM.":"It is in the model menu at the top of WebSAM.",

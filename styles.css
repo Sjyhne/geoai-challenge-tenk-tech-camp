@@ -138,15 +138,21 @@ nav button.done b{background:var(--kv-green);color:#fff}
 .websam-launch b{display:block;font-size:1.3rem}
 .websam-launch small{display:block;opacity:.88;margin-top:2px}
 .launch-arrow{margin-left:auto;font-size:2rem}
-.websam-workflow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.websam-workflow{display:grid;gap:12px}
 .workflow-step{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#f4f6fa;border:2px solid #e3e8ef}
 .workflow-step h3{margin:0 0 4px;font-size:1.02rem}
 .workflow-step p{margin:0;line-height:1.4;color:#536176}
 .workflow-step.positive{background:#edf9f1;border-color:#91d2a6}
 .workflow-step.negative{background:#fff1f4;border-color:#eca5b5}
 /* Lagre-steget er det deltakerne oftest glemmer, saa det faar hele bredden. */
-.workflow-step.save{background:#fff8dc;border-color:#e8cd63;grid-column:1/-1}
+.workflow-step.save{background:#fff8dc;border-color:#e8cd63}
 .workflow-step kbd{background:#edf1f6;border:1px solid #cbd4df;border-radius:5px;padding:2px 5px;font-family:inherit;font-weight:800}
+.workflow-title{margin:20px 0 10px;font-size:1.05rem}
+.workflow-step p+h3{margin-top:10px}
+/* Klikkmekanikken er forklaring, ikke et steg - den ligger sammenslaatt. */
+.websam-tips{margin-top:14px;border:1px solid #dce3ed;border-radius:12px;background:#fafbfe}
+.websam-tips summary{cursor:pointer;padding:11px 13px;font-weight:800;font-size:.92rem}
+.websam-tips .workflow-step{margin:0 13px 13px}
 .step-number{display:grid;place-items:center;min-width:34px;height:34px;border-radius:50%;background:var(--purple);color:#fff;font-weight:900}
 .analyse-preview h3{margin-top:0}
 .analysis-image-preview{height:320px;display:grid;place-items:center;background:#edf1f6;border:2px dashed #b9c4d2;border-radius:12px;overflow:hidden;text-align:center;color:#6d7888;padding:12px}
@@ -374,7 +380,6 @@ nav button.done b{background:var(--kv-green);color:#fff}
 }
 @media(max-width:950px){
   .analyse-simple{grid-template-columns:1fr}
-  .websam-workflow{grid-template-columns:1fr}
 }
 @media(max-width:900px){
   .grid,.digitize-layout{grid-template-columns:1fr}
