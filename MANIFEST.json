@@ -1,5 +1,5 @@
 {
-  "name": "GeoAI oppgave Tenk Tech Camp",
+  "name": "GeoAI oppgave Techpoint Future",
   "build": "2026-08-04-mac-launcher",
   "changes": [
     "Mac-startskript er lagt til: START-GEOAI-MAC.command starter lokal server og aapner nettleseren",

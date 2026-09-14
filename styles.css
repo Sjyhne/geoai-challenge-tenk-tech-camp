@@ -35,8 +35,8 @@ button:disabled{opacity:.42;cursor:not-allowed}
 /* ---------- Topptekst ---------- */
 header{padding:18px 22px;background:var(--kv-blue);color:#fff}
 header h1{margin:4px 0}header p{margin:0;opacity:.92}
-.tenk-header{position:relative;border-bottom:4px solid var(--kv-green);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.tenk-header-text{min-width:0}
+.site-header{position:relative;border-bottom:4px solid var(--kv-green);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.site-header-text{min-width:0}
 .badge{font-size:.78rem;font-weight:800;background:#fff;color:var(--kv-blue);padding:5px 9px;border-radius:999px}
 .restart-button{flex:none;font-size:.85rem;font-weight:750;padding:8px 13px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.55);color:#fff}
 .restart-button:hover{background:rgba(255,255,255,.26)}

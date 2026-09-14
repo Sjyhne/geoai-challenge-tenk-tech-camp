@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Digitalisert kartdata":"Digitized map data",
     "Eksportert kart":"Exported a map",
     "Se resultatet mitt":"See my result",
-    "GeoAI Challenge · TENK Tech Camp Kristiansand · Kartverket":"GeoAI Challenge · TENK Tech Camp Kristiansand · Kartverket"
+    "GeoAI Challenge · Techpoint Future Kristiansand · Kartverket":"GeoAI Challenge · Techpoint Future Kristiansand · Kartverket"
   };
   const ATTR_EN={
     "Nullstill alt og start forfra":"Reset everything and start over",
@@ -752,7 +752,7 @@ document.addEventListener("DOMContentLoaded", () => {
       missionState.explore=true;updateOverallProgress();
       const a=document.createElement("a");
       a.href=dataUrl;
-      a.download="kartutsnitt-tenk-tech-camp.png";
+      a.download="kartutsnitt-techpoint-future.png";
       document.body.appendChild(a);a.click();a.remove();
       lastCaptureView=viewSignature();
       try{sessionStorage.setItem("geoai-v20-cutout-view",lastCaptureView)}catch(_){}

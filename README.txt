@@ -1,4 +1,4 @@
-GEOAI OPPGAVE – TENK TECH CAMP
+GEOAI OPPGAVE – TECHPOINT FUTURE
 
 Viktig ved oppdatering:
 1. Slett eller gi nytt navn til den gamle utpakkede mappen.
