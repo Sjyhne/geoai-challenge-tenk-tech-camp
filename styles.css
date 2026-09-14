@@ -55,7 +55,7 @@ header h1{margin:4px 0}header p{margin:0;opacity:.92}
 /* ---------- Fanemeny med innebygd fremdrift ---------- */
 .nav-shell{position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 4px 14px rgba(23,32,56,.06)}
 nav{display:flex;overflow:auto}
-nav button{flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-bottom:3px solid transparent;background:#fff;color:#4d5a6d;padding:14px;font-weight:800;cursor:pointer;white-space:nowrap}
+nav button{flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-bottom:3px solid transparent;border-radius:0;background:#fff;color:#4d5a6d;padding:14px;font-weight:800;cursor:pointer;white-space:nowrap}
 nav button.active{color:var(--purple);border-bottom-color:var(--purple)}
 nav button b{display:grid;place-items:center;width:23px;height:23px;flex:none;border-radius:50%;background:#e5e8ef;color:#6f7784;font-size:.78rem;font-weight:900;transition:background .25s,color .25s}
 nav button.active b{background:var(--purple);color:#fff}
