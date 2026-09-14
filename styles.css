@@ -50,7 +50,10 @@ header h1{margin:4px 0}header p{margin:0;opacity:.92}
 .header-logo-fallback{display:none;align-items:center;gap:6px;font-weight:900;background:#fff;color:var(--kv-blue);padding:9px 13px;border-radius:9px}
 /* Partnernavn ved siden av Kartverket-logoen. Samme hoyde (46px) som
    .header-logo, slik at de to kortene staar paa linje. */
-.header-partner{display:inline-flex;align-items:center;height:46px;padding:0 14px;border-radius:9px;background:#fff;color:var(--kv-blue);font-weight:900;font-size:.95rem;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.16)}
+/* Merket er cyan og forsvinner mot hvitt, saa dette kortet er moerkt
+   i stedet - samme hoyde og form som Kartverket-kortet ved siden av. */
+.header-partner{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 15px 0 11px;border-radius:9px;background:var(--kv-blue-dark);color:#fff;font-weight:900;font-size:.95rem;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.16)}
+.header-partner-logo{display:block;height:39px;width:auto}
 
 /* ---------- Fanemeny med innebygd fremdrift ---------- */
 .nav-shell{position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 4px 14px rgba(23,32,56,.06)}
