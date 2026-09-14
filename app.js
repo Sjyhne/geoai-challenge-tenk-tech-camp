@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Lagre utsnitt og bygg kart →":"Save cutout and build map →",
     "Gjenskap kartet ditt med KI":"Recreate your map with AI",
     "Bruk kartbildet fra steg 1 og prøv å få modellen til å finne de samme objektene som du tegnet i steg 2.":"Use the map image from step 1 and try to get the model to find the same objects you drew in step 2.",
+    "Slik fargelegger KI-en kartet ditt":"This is how the AI colours your map",
     "Åpne WebSAM 2.1 Small":"Open WebSAM 2.1 Small",
     "Slik gjør du det i WebSAM":"How to do it in WebSAM",
     "Tips: slik styrer du KI-en":"Tip: how to steer the AI",
