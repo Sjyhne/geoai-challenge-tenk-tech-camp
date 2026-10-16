@@ -4,6 +4,8 @@
 
   const $ = id => document.getElementById(id);
   const KEY = 'girl-tech-fest-map-v1';
+  // Esri has no level 19/20 imagery in the workshop area. Never request those levels.
+  const IMAGE_MAX_ZOOM = 18;
   let saved = {};
   try {
     saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {};
@@ -46,11 +48,18 @@
     $('status').textContent = 'Kartet kunne ikke lastes. Sjekk nettet og last siden på nytt.';
     return;
   }
+  function imageryLayer() {
+    return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: IMAGE_MAX_ZOOM, maxNativeZoom: IMAGE_MAX_ZOOM, crossOrigin: true,
+      attribution: 'Bilder © Esri, Maxar og bidragsytere'
+    });
+  }
   const layers = L.featureGroup(),
     results = L.featureGroup();
   for (const [id, name] of [['exploreMap', 'explore'], ['digitizeMap', 'digitize'], ['resultMap', 'result']]) {
     const m = maps[name] = L.map(id, {
       doubleClickZoom: false,
+      maxZoom: IMAGE_MAX_ZOOM,
       zoomSnap: name === 'digitize' ? 0 : 1,
       zoomControl: true,
       dragging: true,
@@ -60,13 +69,8 @@
       keyboard: true,
       maxBoundsViscosity: 1,
       zoomAnimation: name !== 'digitize'
-    }).setView(saved.center || [58.1467, 7.9956], saved.zoom || 17);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: name === 'digitize' ? 24 : 20,
-      maxNativeZoom: 20,
-      attribution: 'Bilder © Esri, Maxar og bidragsytere',
-      crossOrigin: true
-    }).addTo(m);
+    }).setView(saved.center || [58.1467, 7.9956], Math.min(saved.zoom || 17, IMAGE_MAX_ZOOM));
+    imageryLayer().addTo(m);
   }
   layers.addTo(maps.digitize);
   results.addTo(maps.result);
@@ -152,12 +156,13 @@
     map.style.height = '';
     map.style.flex = '1 1 0';
     const available = map.getBoundingClientRect();
-    const width = Math.min(available.width, available.height * ratio);
+    const nativeWidth = maps.digitize.project(bounds.getNorthEast(), IMAGE_MAX_ZOOM).x - maps.digitize.project(bounds.getNorthWest(), IMAGE_MAX_ZOOM).x;
+    const width = Math.min(available.width, available.height * ratio, nativeWidth);
     map.style.flex = '0 0 auto';
     map.style.width = width + 'px';
     map.style.height = width / ratio + 'px';
     maps.digitize.invalidateSize({pan:false});
-    const minimumZoom = maps.digitize.getBoundsZoom(bounds);
+    const minimumZoom = Math.min(IMAGE_MAX_ZOOM, Math.round(maps.digitize.getBoundsZoom(bounds) * 1e6) / 1e6);
     maps.digitize.setMinZoom(minimumZoom);
     maps.digitize.setMaxBounds(bounds);
     if (drawingFrameChanged) {
@@ -449,7 +454,7 @@
         l.setStyle(style(f, true));
         maps.result.fitBounds(l.getBounds(), {
           padding: [70, 70],
-          maxZoom: 19
+          maxZoom: IMAGE_MAX_ZOOM
         });
         l.openTooltip();
         document.querySelectorAll('.object-item').forEach(x => x.classList.toggle('selected', x === b));
@@ -463,7 +468,7 @@
       maps.result.invalidateSize();
       if (features.length) maps.result.fitBounds(results.getBounds(), {
         padding: [35, 35],
-        maxZoom: 19
+        maxZoom: IMAGE_MAX_ZOOM
       });else maps.result.setView(maps.explore.getCenter(), maps.explore.getZoom());
     });
   }
@@ -495,17 +500,17 @@
     const container = document.createElement('div');
     container.style.cssText = 'position:fixed;left:-10000px;top:0;width:1200px;height:700px;';
     document.body.append(container);
-    const posterMap = L.map(container, {zoomControl:false, attributionControl:false, zoomAnimation:false, zoomSnap:0});
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {crossOrigin:true,maxNativeZoom:20,maxZoom:24}).addTo(posterMap);
+    const posterMap = L.map(container, {zoomControl:false, attributionControl:false, zoomAnimation:false, zoomSnap:0, maxZoom:IMAGE_MAX_ZOOM});
+    imageryLayer().addTo(posterMap);
     const drawings = L.featureGroup(features.map(f => layerFor(f))).addTo(posterMap);
-    if (features.length) posterMap.fitBounds(drawings.getBounds(), {padding:[45,45],maxZoom:19});
+    if (features.length) posterMap.fitBounds(drawings.getBounds(), {padding:[45,45],maxZoom:IMAGE_MAX_ZOOM});
     else if (chosenBounds) posterMap.fitBounds(chosenBounds);
     else posterMap.setView(maps.explore.getCenter(), maps.explore.getZoom());
     try {
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const tiles = [...container.querySelectorAll('.leaflet-tile')];
     await Promise.all(tiles.map(img => img.complete ? Promise.resolve() : new Promise(resolve => {
-      const timer = setTimeout(resolve, 6000);
+      const timer = setTimeout(resolve, 25000);
       const done = () => { clearTimeout(timer); resolve(); };
       img.addEventListener('load', done, {once:true});
       img.addEventListener('error', done, {once:true});
