@@ -1,67 +1,18 @@
 #!/usr/bin/env bash
-set -u
-
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PORT=8765
-URL="http://127.0.0.1:${PORT}/index.html"
-PROFILE_DIR="${TMPDIR:-/tmp}/geoai-webgpu-profile"
-
-cd "$DIR" || exit 1
-
-PYTHON_BIN=""
+set -eu
+cd "$(dirname "$0")"
 if command -v python3 >/dev/null 2>&1; then
-  PYTHON_BIN="python3"
-elif command -v python >/dev/null 2>&1; then
-  PYTHON_BIN="python"
-fi
-
-BROWSER=""
-for candidate in google-chrome-stable google-chrome chromium chromium-browser; do
-  if command -v "$candidate" >/dev/null 2>&1; then
-    BROWSER="$candidate"
-    break
-  fi
-done
-
-if [[ -z "$BROWSER" ]]; then
-  echo "Fant ikke Chrome eller Chromium."
-  echo "Installer Chrome/Chromium og start skriptet på nytt."
-  echo "Firefox kan fremdeles mangle WebGPU-støtte på denne Linux-maskinen."
-  read -r -p "Trykk Enter for å avslutte ..."
+  PYTHON_BIN=python3
+else
+  echo "Installer Python 3 for å starte kartoppgaven."
   exit 1
 fi
-
-if [[ -z "$PYTHON_BIN" ]]; then
-  echo "Python 3 mangler. Installer Python eller åpne index.html manuelt."
-  read -r -p "Trykk Enter for å avslutte ..."
-  exit 1
+echo "Girl Tech Fest – Lag ditt eget kart"
+echo "Åpne http://127.0.0.1:8765/ i nettleseren."
+echo "La vinduet stå åpent. Trykk Ctrl+C for å stoppe."
+if command -v xdg-open >/dev/null 2>&1; then
+  (sleep 1; xdg-open http://127.0.0.1:8765/ >/dev/null 2>&1) &
+elif command -v open >/dev/null 2>&1; then
+  (sleep 1; open http://127.0.0.1:8765/) &
 fi
-
-mkdir -p "$PROFILE_DIR"
-
-open_browser() {
-  # WebSAM requires a WebGPU adapter. These flags enable Linux WebGPU/Vulkan
-  # and use a separate browser profile so an already running Chrome process
-  # cannot silently ignore the launch flags.
-  "$BROWSER" \
-    --user-data-dir="$PROFILE_DIR" \
-    --enable-unsafe-webgpu \
-    --ignore-gpu-blocklist \
-    --enable-features=Vulkan,VulkanFromANGLE \
-    --use-angle=vulkan \
-    --ozone-platform=x11 \
-    "$URL" >/dev/null 2>&1 &
-}
-
-if (echo > /dev/tcp/127.0.0.1/$PORT) >/dev/null 2>&1; then
-  echo "Det kjører allerede en lokal server på $URL."
-  open_browser
-  exit 0
-fi
-
-echo "GeoAI er startet i $BROWSER med WebGPU aktivert."
-echo "Starter lokal webserver i dette terminalvinduet."
-echo "La terminalen stå åpen. Trykk Ctrl+C her for å stoppe GeoAI-serveren."
-
-(sleep 1; open_browser) &
-exec "$PYTHON_BIN" -m http.server "$PORT" --bind 127.0.0.1
+exec "$PYTHON_BIN" -m http.server 8765 --bind 127.0.0.1

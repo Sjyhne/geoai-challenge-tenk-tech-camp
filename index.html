@@ -1,117 +1,17 @@
 <!doctype html>
-<html lang="no">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>GeoAI Challenge – Techpoint Future × Kartverket</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
-    onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
-  <link rel="stylesheet" href="leaflet-fallback.css">
-  <link rel="stylesheet" href="styles.css?build=20260914-techpoint-logo">
-</head>
-<body>
-<header class="site-header">
-  <div class="site-header-text">
-    <span class="badge">TECHPOINT FUTURE · KRISTIANSAND</span>
-    <h1>GeoAI Challenge</h1>
-    <p>Utforsk verden ovenfra, bruk KI og bygg ditt eget digitale kart.</p>
-  </div>
-  <div class="header-side">
-    <img class="header-logo" src="kartverket-logo.svg" alt="Kartverket"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
-    <span class="header-logo-fallback">▦ KARTVERKET</span>
-    <span class="header-partner">
-      <img class="header-partner-logo" src="techpoint-logo.svg?v=20260914" alt="" aria-hidden="true">
-      Techpoint Future
-    </span>
-    <button type="button" id="languageToggle" class="language-toggle" title="Change language" aria-label="Change language">
-      🇬🇧 English
-    </button>
-    <button type="button" id="restartChallenge" class="restart-button" title="Nullstill alt og start forfra">
-      ↺ Start på nytt
-    </button>
-  </div>
-</header>
-
-<div class="nav-shell">
-  <nav aria-label="Oppgaver">
-    <button type="button" class="tab-button active" data-tab="intro">Start</button>
-    <button type="button" class="tab-button" data-tab="explore" data-progress-step="explore">
-      <b data-step-number="1">1</b>Finn område</button>
-    <button type="button" class="tab-button" data-tab="digitize" data-progress-step="digitize">
-      <b data-step-number="2">2</b>Bygg kart</button>
-    <button type="button" class="tab-button" data-tab="analyse" data-progress-step="analyse">
-      <b data-step-number="3">3</b>Bruk KI</button>
-    <button type="button" class="tab-button" data-tab="result" data-progress-step="result">
-      <b data-step-number="4">4</b>Resultat</button>
-  </nav>
-  <div class="nav-progress" aria-hidden="true"><div id="overallProgressBar"></div></div>
-</div>
-
-<main>
-<section id="intro" class="tab active">
-  <div class="intro-hero">
-    <div class="intro-copy card">
-      <div class="partner-logo-wrap">
-        <img class="kartverket-logo" src="kartverket-logo.svg" alt="Kartverket"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'">
-        <span class="kartverket-logo-fallback">▦ KARTVERKET</span>
-      </div>
-      <span class="eyebrow">TECHPOINT FUTURE KRISTIANSAND</span>
-      <h2>Bli geomatiker for en dag</h2>
-      <p class="lead">Du skal gjøre fire oppgaver: finne et område, tegne ditt eget kart, prøve å gjenskape kartet med KI og sette sammen et ferdig resultat.</p>
-      <button type="button" id="startMission" class="start-button">Start oppdraget →</button>
-    </div>
-    <div class="intro-visual card">
-      <div class="ai-demo" role="img" aria-label="Kartet skifter mellom vanlig visning og KI-ens fargelegging av vann, skog og bygg">
-        <img src="intro-1.svg?v=20260914-bygg" alt="" aria-hidden="true">
-        <img class="ai-demo-top" src="intro-2.svg?v=20260914-bygg" alt="" aria-hidden="true">
-      </div>
-    </div>
-  </div>
-  <h3 class="intro-preview-title">Dette skal du gjøre</h3>
-  <div class="intro-preview">
-    <article class="preview-card">
-      <img src="intro-1.svg?v=20260914-bygg" alt="Illustrert kart ovenfra med sjø, skog, hus og veier">
-      <div class="preview-body">
-        <span class="preview-step">1</span>
-        <h3>Finn ditt område</h3>
-        <p>Zoom inn på skolen, hjemstedet eller stranda i ekte flyfoto.</p>
-      </div>
-    </article>
-    <article class="preview-card">
-      <img src="intro-3.svg?v=20260914-bygg" alt="Samme kart der vann, skog, bygg og vei er tegnet inn med farger">
-      <div class="preview-body">
-        <span class="preview-step">2</span>
-        <h3>Tegn ditt eget kart</h3>
-        <p>Marker bygg, veier, skog og vann – akkurat som en geomatiker.</p>
-      </div>
-    </article>
-    <article class="preview-card">
-      <img src="intro-2.svg?v=20260914-bygg" alt="Samme kart der KI-en har markert vann, skog og bygg med stiplet omriss">
-      <div class="preview-body">
-        <span class="preview-step">3</span>
-        <h3>La KI-en prøve</h3>
-        <p>Bruk KI-en til å finne de samme objektene som du tegnet selv.</p>
-      </div>
-    </article>
-    <article class="preview-card">
-      <img src="intro-4.svg?v=20260914-bygg" alt="Sammenligning der grønt viser at KI-en og deltakeren er enige">
-      <div class="preview-body">
-        <span class="preview-step">4</span>
-        <h3>Hvem traff best?</h3>
-        <p>Kartet ditt legges oppå KI-ens maske. Grønt betyr at dere er enige.</p>
-      </div>
-    </article>
-  </div>
-</section>
-
+<html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Girl Tech Fest – Lag ditt eget kart</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="styles.css?build=20261016-map-poster"></head><body>
+<header class="site-header"><div><span class="badge">GIRL TECH FEST</span><h1>Lag ditt eget kart</h1><p>Finn et sted. Tegn det du ser. Vis fram kartet ditt!</p></div><div class="header-side"><img class="header-logo" src="kartverket-logo.svg" alt="Kartverket"><button id="restartChallenge" class="secondary">Start på nytt</button></div></header>
+<nav aria-label="Oppgaver"><button class="tab-button active" data-tab="intro">Start</button><button class="tab-button" data-tab="explore">1 · Finn område</button><button class="tab-button" data-tab="digitize">2 · Bygg kart</button><button class="tab-button" data-tab="result">3 · Kartet mitt</button></nav>
+<main><section id="intro" class="tab active"><div class="intro-hero card"><div><span class="eyebrow">GIRL TECH FEST × KARTVERKET</span><h2>Hva kan du finne på kartet?</h2><p>Se på bilder tatt ovenfra. Finn hus, veier, skog og vann, og tegn ditt eget kart oppå bildet.</p><button id="startMission">La oss begynne →</button></div><img src="intro-1.svg" alt="Et kart med hus, skog, vann og veier"></div><div class="intro-preview"><article class="card"><h3>1 · Finn et sted</h3><p>Let etter skolen din, en strand eller et annet sted du kjenner.</p></article><article class="card"><h3>2 · Tegn det du ser</h3><p>Velg en farge og tegn rundt hus, skog og vann. Tegn en strek langs veien.</p></article><article class="card"><h3>3 · Vis fram kartet</h3><p>Se på alt du har tegnet. Trykk på en tegning for å se den nærmere.</p></article></div></section>
 <section id="explore" class="tab">
   <div class="grid">
     <article class="card">
-      <h2>Oppdrag 1: Finn et område</h2>
-      <div class="mission"><b>Velg et sted du kjenner.</b><br>Finn skolen, hjemstedet eller et interessant område.</div>
-      <label for="placeSelect">Hurtigvalg</label>
+      <h2>Oppdrag 1: Finn et sted</h2>
+      <div class="mission"><b>Velg et sted du kjenner.</b><br>Finn skolen, hjemmet ditt eller et annet sted du liker.</div>
+      <label for="placeSelect">Velg et sted fra lista</label>
       <select id="placeSelect">
         <optgroup label="Kristiansand">
           <option value="58.1467,7.9956,16">🏛️ Kristiansand sentrum</option>
@@ -139,150 +39,63 @@
       <div class="place-search">
         <label for="placeSearchInput">Søk etter adresse eller sted</label>
         <form id="placeSearchForm" class="place-search-form">
-          <input id="placeSearchInput" autocomplete="off" placeholder="F.eks. Tangen videregående skole eller Storgata 1 Oslo">
+          <input id="placeSearchInput" autocomplete="off" placeholder="Skriv et sted eller en adresse">
           <button type="submit">Søk</button>
         </form>
         <div id="placeSearchStatus" class="search-status" role="status"></div>
         <ul id="placeSearchResults" class="search-results" hidden></ul>
       </div>
 
-      <label for="hypothesis">Din hypotese</label>
-      <textarea id="hypothesis" rows="4" placeholder="Hvilke objekter tror du blir lettest eller vanskeligst for KI-en å gjenskape?"></textarea>
-      <p class="small">Hypotesen blir med i rapporten du laster ned i steg 4.</p>
+      <p class="small">Dra i kartet for å flytte det. Bruk + for å se nærmere. Finn et sted med hus, vei, skog eller vann.</p>
 
-      <p class="small">Midtstill objektet du vil analysere i kartet. Når du går videre lagres et
-        kvadratisk utsnitt automatisk, og det lastes ned som PNG.
-        Etter at du har tegnet ditt eget kart, laster du den filen opp i WebSAM.</p>
-      <div id="mapImageStatus" class="step-message" hidden></div>
 
-      <button type="button" class="next-step" data-next="digitize" data-capture="cutout">Lagre utsnitt og bygg kart →</button>
+      <button type="button" class="next-step" data-next="digitize">Tegn her →</button>
     </article>
-    <article class="card"><div id="exploreMap" class="map square-work-map"></div></article>
-  </div>
-</section>
-
-<section id="analyse" class="tab">
-  <div class="analyse-simple">
-    <article class="card websam-main">
-      <div class="websam-heading">
-        <span class="eyebrow">OPPDRAG 3</span>
-        <h2>Gjenskap kartet ditt med KI</h2>
-        <p>Bruk kartbildet fra steg 1 og prøv å få modellen til å finne de samme objektene som du tegnet i steg 2.</p>
-      </div>
-
-      <a id="websamLaunch" class="websam-launch" target="_blank" rel="noopener" href="https://websam.xevion.dev/">
-        <span>
-          <b>Åpne WebSAM 2.1 Small</b>
-          <small>Åpner i en ny fane – kom tilbake hit når du er ferdig</small>
-        </span>
-        <span class="launch-arrow">→</span>
-      </a>
-      <div id="gpuStatus" class="step-message" hidden></div>
-
-      <h3 class="workflow-title">Slik gjør du det i WebSAM</h3>
-      <div class="websam-workflow">
-        <div class="workflow-step">
-          <span class="step-number">1</span>
-          <div>
-            <h3>Velg modellen SAM 2.1 Small</h3>
-            <p>Den står i modellmenyen øverst i WebSAM.</p>
-            <h3>Last opp kartbildet fra steg 1</h3>
-            <p>PNG-filen som ble lastet ned i steg 1.</p>
-          </div>
-        </div>
-        <div class="workflow-step save">
-          <span class="step-number">2</span>
-          <div>
-            <h3>Lagre masken med <kbd>D</kbd></h3>
-            <p>Gjør dette i WebSAM før du går tilbake hit. Har du flere objekter eller typer,
-              kan du lagre flere masker – de slås sammen automatisk i steg 4.</p>
-          </div>
-        </div>
-      </div>
-
-      <details class="websam-tips">
-        <summary>Tips: slik styrer du KI-en</summary>
-        <div class="workflow-step positive">
-          <div>
-            <h3>Venstreklikk på et objekt du tegnet</h3>
-            <p>Dette forteller KI-en: <b>«Ta med dette»</b>. Lag én eller flere masker, og importer dem under riktig objekttype.</p>
-          </div>
-        </div>
-        <div class="workflow-step negative">
-          <div>
-            <h3>Høyreklikk på feil områder</h3>
-            <p>Dette forteller KI-en: <b>«Ikke ta med dette»</b>.</p>
-          </div>
-        </div>
-      </details>
-
-      <button type="button" class="next-step" data-next="result">Neste: Se resultatet →</button>
-    </article>
-
-    <aside class="card analyse-preview">
-      <h3>Kartbildet ditt</h3>
-      <div id="analysisImagePreview" class="analysis-image-preview">
-        <img id="analysisPreviewImg" alt="Kartutsnitt fra steg 1">
-        <span>Gå til steg 1 og trykk «Lagre kartutsnitt».</span>
-      </div>
-      <div id="cutoutReadyStatus" class="auto-status">Kartbildet er ikke lagret ennå.</div>
-
-      <details id="fallbackTool" class="fallback-tool">
-        <summary>Fungerer ikke WebSAM?</summary>
-        <p class="small">Reserveverktøyet gjør det samme, men uten WebGPU-testen først.</p>
-        <a class="button secondary full" target="_blank" rel="noopener" href="https://sam2-seven.vercel.app/">
-          Åpne reserveverktøy
-        </a>
-      </details>
-    </aside>
+    <article class="card map-card"><p class="map-help">Flytt og zoom til du ser området du vil tegne.</p><div id="exploreMap" class="map square-work-map"></div></article>
   </div>
 </section>
 
 <section id="digitize" class="tab">
   <div class="digitize-layout">
     <aside class="card controls">
-      <h2>Oppdrag 2: Lag ditt eget kart</h2>
+      <h2>Tegn kartet ditt</h2>
 
       <div id="typeButtons" class="object-grid">
-        <button type="button" class="object-btn" data-object-type="building" style="--object-color:#e65b75">
-          <span class="object-icon">🏠</span><span class="object-name">Bygg</span>
-          <input class="object-color" data-color-type="building" type="color" value="#e65b75" aria-label="Velg farge for bygg" title="Velg farge">
-        </button>
-        <button type="button" class="object-btn" data-object-type="road" style="--object-color:#f3b231">
+        <div class="object-choice"><button type="button" class="object-btn" data-object-type="building" style="--object-color:#e65b75">
+          <span class="object-icon">🏠</span><span class="object-name">Hus</span>
+          </button><input class="object-color" data-color-type="building" type="color" value="#e65b75" aria-label="Velg farge for hus" title="Velg farge"></div>
+        <div class="object-choice"><button type="button" class="object-btn" data-object-type="road" style="--object-color:#f3b231">
           <span class="object-icon">🛣️</span><span class="object-name">Vei</span>
-          <input class="object-color" data-color-type="road" type="color" value="#f3b231" aria-label="Velg farge for vei" title="Velg farge">
-        </button>
-        <button type="button" class="object-btn" data-object-type="forest" style="--object-color:#309252">
+          </button><input class="object-color" data-color-type="road" type="color" value="#f3b231" aria-label="Velg farge for vei" title="Velg farge"></div>
+        <div class="object-choice"><button type="button" class="object-btn" data-object-type="forest" style="--object-color:#309252">
           <span class="object-icon">🌲</span><span class="object-name">Skog</span>
-          <input class="object-color" data-color-type="forest" type="color" value="#309252" aria-label="Velg farge for skog" title="Velg farge">
-        </button>
-        <button type="button" class="object-btn" data-object-type="water" style="--object-color:#369bd3">
+          </button><input class="object-color" data-color-type="forest" type="color" value="#309252" aria-label="Velg farge for skog" title="Velg farge"></div>
+        <div class="object-choice"><button type="button" class="object-btn" data-object-type="water" style="--object-color:#369bd3">
           <span class="object-icon">💧</span><span class="object-name">Vann</span>
-          <input class="object-color" data-color-type="water" type="color" value="#369bd3" aria-label="Velg farge for vann" title="Velg farge">
-        </button>
+          </button><input class="object-color" data-color-type="water" type="color" value="#369bd3" aria-label="Velg farge for vann" title="Velg farge"></div>
       </div>
       <p class="small color-help">Trykk på fargesirkelen for å velge din egen kartfarge.</p>
-      <div class="custom-type-card">
+      <details class="custom-type-card"><summary>Tegn noe annet</summary>
         <div class="custom-type-head">
-          <h3>Egen karttype</h3>
+          <h3>Legg til en ny ting</h3>
           <span id="customTypeCount">0/3</span>
         </div>
         <div class="custom-type-form">
           <input id="customTypeName" maxlength="20" placeholder="F.eks. strand, brygge, ballbane">
-          <input id="customTypeColor" type="color" value="#8b5cf6" aria-label="Velg farge for egen karttype" title="Velg farge">
+          <input id="customTypeColor" type="color" value="#8b5cf6" aria-label="Velg farge for det du vil tegne" title="Velg farge">
           <button type="button" id="addCustomType">Legg til</button>
         </div>
         <ul id="customTypeList" class="custom-type-list"></ul>
         <div id="customTypeStatus" class="custom-type-status"></div>
-      </div>
+      </details>
 
       <div class="row">
-        <button type="button" id="editSelected" class="secondary">Rediger valgt</button>
-        <button type="button" id="deleteSelected" class="secondary">Slett valgt</button>
+        <button type="button" id="editSelected" class="secondary">Flytt på tegningen</button>
+        <button type="button" id="deleteSelected" class="secondary">Slett tegningen</button>
       </div>
       <button type="button" id="clearAll" class="danger-link">Tøm hele kartet</button>
 
-      <div class="game-card">
+      <p class="small drawing-help">Velg en ting. Klikk langs kanten. Trykk «Ferdig med tegningen».</p><div class="game-card">
         <div class="game-head">
           <h3>Kartutfordringen</h3>
           <strong id="challengePercent">0 %</strong>
@@ -291,18 +104,17 @@
         <div id="missionProgress"></div>
       </div>
 
-      <label for="mapTitle">Kartnavn</label>
-      <input id="mapTitle" placeholder="Mitt kart over skoleområdet">
 
-      <button type="button" class="next-step" data-next="analyse">Neste: Bruk KI →</button>
+
+      <button type="button" class="next-step" data-next="result">Se kartet mitt →</button>
     </aside>
 
     <article class="card map-card">
-      <div class="map-action-bar" aria-label="Tegneverktøy">
+      <p class="map-help">🔒 Zoom inn og tegn. Du kan bare flytte kartet innenfor området du valgte.</p><div class="map-action-bar" aria-label="Tegneverktøy">
         <div id="status" class="map-status" role="status">Starter kartet …</div>
         <div class="map-action-buttons">
-          <button type="button" id="finishObject" class="finish-object-primary" disabled>Fullfør objekt</button>
-          <button type="button" id="undoPoint" class="secondary" disabled>Angre punkt</button>
+          <button type="button" id="finishObject" class="finish-object-primary" disabled>Ferdig med tegningen</button>
+          <button type="button" id="undoPoint" class="secondary" disabled>Angre siste klikk</button>
           <button type="button" id="cancelObject" class="secondary" disabled>Avbryt</button>
         </div>
       </div>
@@ -313,184 +125,28 @@
 </section>
 
 <section id="result" class="tab">
-  <article class="card mask-card">
-    <div class="mask-card-main">
-      <div>
-        <span class="eyebrow">OPPDRAG 4</span>
-        <h2>Slipp inn KI-maskene fra WebSAM</h2>
-        <p class="small">Kartet og ortofotoet hentes automatisk. Legg til maskene KI-en laget for
-          objektene du tegnet, så slås de sammen til én sort/hvit maske og et fargelagt KI-overlegg.</p>
-        <div class="auto-strip">
-          <span id="resultMapStatus" class="auto-status">Venter på kartet fra steg 2 …</span>
-          <span id="cutoutStatus" class="auto-status">Venter på kartutsnitt fra steg 1 …</span>
-        </div>
-      </div>
-
-      <div class="mask-drop-col">
-        <p class="small mask-import-help">Velg hva masken viser, og hent PNG-fila fra WebSAM:</p>
-        <div id="maskTypeButtons" class="mask-type-grid">
-          <button type="button" class="mask-type-btn" data-mask-type="building" style="--object-color:#e65b75">
-            <span class="object-icon">🏠</span><span class="object-name">Bygg</span>
-          </button>
-          <button type="button" class="mask-type-btn" data-mask-type="road" style="--object-color:#f3b231">
-            <span class="object-icon">🛣️</span><span class="object-name">Vei</span>
-          </button>
-          <button type="button" class="mask-type-btn" data-mask-type="forest" style="--object-color:#309252">
-            <span class="object-icon">🌲</span><span class="object-name">Skog</span>
-          </button>
-          <button type="button" class="mask-type-btn" data-mask-type="water" style="--object-color:#369bd3">
-            <span class="object-icon">💧</span><span class="object-name">Vann</span>
-          </button>
-        </div>
-        <input id="resultMask" type="file" accept="image/*" multiple hidden>
-        <div id="maskStatus" class="auto-status">Ingen masker lastet opp ennå.</div>
-        <ul id="maskLayerList" class="mask-layer-list"></ul>
-        <div class="mask-tools">
-          <button type="button" id="clearMasks" class="secondary" disabled>Tøm KI-masker</button>
-          <button type="button" id="downloadProcessedMask" class="secondary" disabled>Last ned sort/hvit maske</button>
-        </div>
-      </div>
-    </div>
-
-    <details class="manual-upload">
-      <summary>Noe mangler? Last opp kart eller ortofoto manuelt</summary>
-      <div class="row">
-        <label class="button secondary upload">Åpne kart (GeoJSON)<input id="resultGeoJSON" type="file" accept=".geojson,.json"></label>
-        <label class="button secondary upload">Bytt ortofoto<input id="resultCutout" type="file" accept="image/*"></label>
-      </div>
-    </details>
+  <div class="card result-heading"><h2 id="finalTitle">Kartet mitt</h2><p id="resultSummary" role="status"></p></div>
+  <div class="result-layout">
+    <aside class="card result-controls">
+      <h3>Dette har jeg tegnet</h3>
+      <p class="small">Trykk på en ting for å se den nærmere.</p>
+      <button id="showAll" class="secondary">Vis alt</button>
+      <div id="objectList"></div>
+      <details class="result-notes"><summary>Gi kartet et navn og skriv litt</summary>
+        <label for="mapTitle">Hva heter kartet ditt?</label><input id="mapTitle" placeholder="Mitt kart over skoleområdet">
+        <label for="reflection">Hva likte du best å tegne?</label><textarea id="reflection" rows="2" placeholder="Jeg likte å tegne …"></textarea>
+        <label for="participantName">Navnet ditt eller lagnavnet ditt (valgfritt)</label><input id="participantName">
+      </details>
+    </aside>
+    <article class="card map-card"><div id="resultMap" class="map"></div><div id="resultLegend" class="legend"></div></article>
+  </div>
+  <div class="row result-actions"><button id="printMap">Skriv ut eller lagre som PDF</button><button id="finishChallenge">Jeg er ferdig! 🎉</button><button class="secondary" data-next="digitize">Tegn mer</button></div>
+</section></main><footer>Girl Tech Fest · Kartverket</footer><dialog id="completion"><h2>Hurra! 🎉</h2><p>Du har laget ditt eget kart!</p><button id="closeCompletion">Se kartet mitt</button></dialog><dialog id="printPreview" aria-label="Forhåndsvisning av kartplakaten">
+  <div class="poster-toolbar"><strong>Kartplakaten din</strong><div><button id="closePrintPreview" class="secondary">Tilbake</button><button id="printPoster">Skriv ut / lagre PDF</button></div></div>
+  <article class="map-poster">
+    <header class="poster-heading"><div><span class="poster-kicker">GIRL TECH FEST · MITT EGET KART</span><h1 id="posterTitle">Se hva jeg har laget!</h1><p id="posterAuthor"></p></div><div class="poster-seal"><span>★</span><b>KART-<br>UTFORSKER</b><span>★</span></div></header>
+    <div class="poster-body"><div class="poster-map-frame"><img id="posterMap" alt="Kartet mitt med alle tegningene"><span class="poster-map-label">ET STED JEG HAR UTFORSKET</span></div><aside class="poster-discoveries"><span class="poster-small-title">JEG FANT OG TEGNET</span><div id="posterTypes"></div><div class="poster-total"><strong id="posterTotal">0</strong><span>ting på kartet mitt!</span></div></aside></div>
+    <footer class="poster-footer"><div><strong>Jeg ser verden med kartøyne!</strong><p id="posterReflection">Jeg har funnet et sted, sett nøye etter og laget mitt eget kart.</p></div><img src="kartverket-logo.svg" alt="Kartverket"></footer>
+    <p class="poster-credit">Flyfoto: Esri, Maxar og bidragsytere · Kart laget på Girl Tech Fest med Kartverket</p>
   </article>
-
-  <div class="final-board card">
-    <div class="final-board-header">
-      <div>
-        <span class="eyebrow">TECHPOINT FUTURE · KRISTIANSAND</span>
-        <h2 id="finalTitle">Mitt GeoAI-kart</h2>
-      </div>
-      <div class="final-board-brand">
-        <div class="result-filter">
-          <label for="resultTypeFilter">Vis klasse</label>
-          <select id="resultTypeFilter">
-            <option value="all">Alle typer</option>
-          </select>
-        </div>
-        <div class="result-badge">GEO + AI</div>
-        <img class="poster-logo" src="kartverket-logo.svg" alt="Kartverket">
-      </div>
-    </div>
-
-    <div class="ai-story">
-      <div class="story-step"><b>1</b><span>Ortofoto</span></div>
-      <div class="story-arrow">→</div>
-      <div class="story-step"><b>2</b><span>Digitalt kart</span></div>
-      <div class="story-arrow">→</div>
-      <div class="story-step"><b>3</b><span>KI finner objekter</span></div>
-    </div>
-
-    <div class="result-summary" aria-live="polite">
-      <div class="score-card">
-        <span>Segmenteringstreff</span>
-        <strong id="matchScore">--</strong>
-        <small id="matchScoreLabel">Legg inn kart og KI-maske</small>
-      </div>
-      <div class="summary-card">
-        <h3>Oppsummering</h3>
-        <p id="finalSummaryText">Resultatet oppdateres når kartet og maskene er klare.</p>
-      </div>
-      <div class="summary-metrics">
-        <div><b id="summaryObjectCount">0</b><span>kartobjekter</span></div>
-        <div><b id="summaryMaskCount">0</b><span>KI-masker</span></div>
-        <div><b id="summaryClassCount">0</b><span>klasser</span></div>
-      </div>
-    </div>
-
-    <div class="final-grid final-grid-v19">
-      <div class="final-panel">
-        <h3>Bildet KI-en fikk</h3>
-        <div class="image-preview"><img id="cutoutPreview" alt="Forhåndsvisning av ortofotoutsnitt"><span>Ingen ortofoto lastet opp</span></div>
-      </div>
-
-      <div class="final-panel ai-overlay-panel">
-        <h3>Dette fant KI-en</h3>
-        <div class="image-preview checkerboard">
-          <img id="overlayPreview" alt="Fargelagt KI-maske over ortofoto">
-          <span>Slipp inn masker fra WebSAM</span>
-        </div>
-        <div id="overlayLegend" class="overlay-legend">Hver maske får sin egen farge her.</div>
-      </div>
-
-      <div class="final-panel">
-        <h3>Sort-hvit maske</h3>
-        <div class="image-preview mask-bw-preview">
-          <img id="maskPreview" alt="Sort/hvit WebSAM-maske">
-          <span>Ingen WebSAM-maske lastet opp</span>
-        </div>
-        <p class="small mask-explanation"><b>Hvit:</b> valgt objekt &nbsp; <b>Sort:</b> bakgrunn</p>
-      </div>
-
-      <div class="final-panel map-panel">
-        <h3>Mitt digitale kart</h3>
-        <div id="resultMap" class="result-map"></div>
-        <img id="resultMapPrintImage" class="result-map-print-image" alt="Kartutsnitt av det digitale kartet">
-        <div id="resultObjectSummary" class="small">Kartet fra steg 2 vises her automatisk.</div>
-      </div>
-
-      <div class="final-panel compare-panel">
-        <h3>KI-en mot ditt kart</h3>
-        <div id="comparePreview" class="image-preview compare-preview">
-          <img id="compareImg" alt="Sammenligning av KI-masken og objektene du tegnet">
-          <span>Trenger både en KI-maske og objekter fra steg 2.</span>
-        </div>
-        <div class="compare-legend">
-          <span><i style="background:#2e9c5b"></i>Begge er enige</span>
-          <span><i style="background:#ec5b91"></i>Bare KI-en</span>
-          <span><i style="background:#39a9dc"></i>Bare ditt kart</span>
-        </div>
-        <div id="compareStats" class="compare-stats"></div>
-        <p id="compareNote" class="small">Her legges KI-masken og objektene dine oppå hverandre.</p>
-      </div>
-    </div>
-
-    <div class="reflection-grid">
-      <div>
-        <label for="reflection">Hva klarte du bedre enn KI-en?</label>
-        <textarea id="reflection" rows="4" placeholder="Eksempel: Jeg klarte lettere å forstå hvor bygningen sluttet og veien begynte."></textarea>
-      </div>
-      <div>
-        <label for="quality">Hvor nøyaktig synes du kartet ble?</label>
-        <select id="quality"><option>Veldig nøyaktig</option><option>Ganske nøyaktig</option><option>Usikkert</option></select>
-        <label for="participantName">Lagnavn (valgfritt)</label>
-        <input id="participantName" placeholder="F.eks. Team GeoNinja">
-      </div>
-    </div>
-  </div>
-
-  <div class="row result-actions">
-    <button type="button" id="finishChallenge" class="finish-challenge">Fullfør GeoAI Challenge</button>
-  </div>
-</section>
-</main>
-<div id="completionOverlay" class="completion-overlay" aria-hidden="true">
-  <div class="completion-card">
-    <div id="confettiArea" class="confetti-area"></div>
-    <div class="trophy">🏆</div>
-    <span class="eyebrow">TECHPOINT FUTURE × KARTVERKET</span>
-    <h2>Gratulerer!</h2>
-    <p>Du har laget ditt første GeoAI-kart.</p>
-    <div class="completion-skills">
-      <span>Tolket ortofoto</span><span>Brukt en KI</span>
-      <span>Digitalisert kartdata</span><span>Eksportert kart</span>
-    </div>
-    <button type="button" id="closeCompletion">Se resultatet mitt</button>
-  </div>
-</div>
-
-<footer>GeoAI Challenge · Techpoint Future Kristiansand · Kartverket</footer>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"
-  onerror="this.onerror=null;this.src='https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js'"></script>
-<script src="app.js?build=20260914-techpoint-logo"></script>
-</body>
-</html>
+</dialog><script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script><script src="app.js?build=20261016-map-poster"></script></body></html>
