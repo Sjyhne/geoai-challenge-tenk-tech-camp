@@ -279,6 +279,7 @@
     updateSketch();
   }
   function updateSketch() {
+    $('digitizeMap').classList.toggle('drawing-mode', Boolean(current));
     if (sketch) sketch.remove();
     sketch = null;
     if (points.length) sketch = (current === 'road' ? L.polyline(points, {

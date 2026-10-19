@@ -769,3 +769,11 @@ body {
   .poster-footer img { width: 30mm; }
   .poster-credit { font-size: 6pt; }
 }
+
+
+/* The pencil tip is the click point. Map controls retain their own cursors. */
+#digitizeMap.drawing-mode,
+#digitizeMap.drawing-mode .leaflet-pane,
+#digitizeMap.drawing-mode .leaflet-interactive {
+  cursor: url("pencil-cursor.svg?v=24") 2 22, crosshair !important;
+}
